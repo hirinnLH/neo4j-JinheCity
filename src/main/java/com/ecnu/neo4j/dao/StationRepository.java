@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.dao;
 
 import com.ecnu.neo4j.dto.TestCase10;
+import com.ecnu.neo4j.dto.TestCase111;
 import org.neo4j.driver.types.Path;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface StationRepository {
     //List<Path> getDepartInfo(String name);
     //10.查询停靠线路最多的前n个站点
     List<TestCase10> getNMostLine(int num);
+    //11-1. 查询地铁站、终点站、始发站
+    TestCase111 getCaseStation();
 }

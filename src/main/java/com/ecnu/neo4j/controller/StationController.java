@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.controller;
 
 import com.ecnu.neo4j.dto.TestCase10;
+import com.ecnu.neo4j.dto.TestCase111;
 import com.ecnu.neo4j.dto.TestCase2;
 import com.ecnu.neo4j.dto.TestCase7;
 import com.ecnu.neo4j.service.StationService;
@@ -29,5 +30,10 @@ public class StationController {
         String num = String.valueOf(request.getParameter("num"));
         List<TestCase10> testCase10 = service.findNMostLine(Integer.parseInt(num));
         return testCase10;
+    }
+
+    public Object listCaseStation(HttpServletRequest request) {
+        TestCase111 testCase111 = service.findCaseStation();
+        return testCase111;
     }
 }

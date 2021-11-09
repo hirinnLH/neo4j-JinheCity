@@ -3,6 +3,7 @@ package com.ecnu.neo4j.service.impl;
 import com.ecnu.neo4j.dao.StationRepository;
 import com.ecnu.neo4j.dao.impl.StationRepositoryImpl;
 import com.ecnu.neo4j.dto.TestCase10;
+import com.ecnu.neo4j.dto.TestCase111;
 import com.ecnu.neo4j.dto.TestCase2;
 import com.ecnu.neo4j.dto.TestCase7;
 import com.ecnu.neo4j.entity.Station;
@@ -100,5 +101,10 @@ public class StationServiceImpl implements StationService {
     @Override
     public List<TestCase10> findNMostLine(int num) {
         return stationRepository.getNMostLine(num);
+    }
+
+    @Override
+    public TestCase111 findCaseStation() {
+        return stationRepository.getCaseStation();
     }
 }

@@ -18,5 +18,6 @@ public interface LineRepository {
     Path getShortestRouteByStationId(String startId, String endId);
     //5-2.藉由站点的名称查询指定站点到另一站点的最短路径
     Path getShortestRouteByStationName(String startName, String endName);
+    //12. 统计每一种类型的线路数量
 
 }
