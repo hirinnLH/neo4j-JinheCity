@@ -2,6 +2,8 @@ package com.ecnu.neo4j.dao;
 
 import com.ecnu.neo4j.dto.TestCase10;
 import com.ecnu.neo4j.dto.TestCase111;
+import com.ecnu.neo4j.entity.Station;
+import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface StationRepository {
     List<TestCase10> getNMostLine(int num);
     //11-1. 查询地铁站、终点站、始发站
     TestCase111 getCaseStation();
+    //13 查询两路线的交叉站点
+    List<Node> getCrossStation(String line1, String line2);
 }

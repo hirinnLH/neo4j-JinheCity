@@ -2,10 +2,7 @@ package com.ecnu.neo4j.service.impl;
 
 import com.ecnu.neo4j.dao.StationRepository;
 import com.ecnu.neo4j.dao.impl.StationRepositoryImpl;
-import com.ecnu.neo4j.dto.TestCase10;
-import com.ecnu.neo4j.dto.TestCase111;
-import com.ecnu.neo4j.dto.TestCase2;
-import com.ecnu.neo4j.dto.TestCase7;
+import com.ecnu.neo4j.dto.*;
 import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.service.StationService;
 import org.neo4j.driver.types.Node;
@@ -106,5 +103,22 @@ public class StationServiceImpl implements StationService {
     @Override
     public TestCase111 findCaseStation() {
         return stationRepository.getCaseStation();
+    }
+
+    @Override
+    public TestCase13 findCrossStation(String line1, String line2) {
+        TestCase13 testCase13 = new TestCase13();
+        List<Station> list = new ArrayList<>();
+        List<Node> nodeList = stationRepository.getCrossStation(line1, line2);
+        for(Node node:nodeList) {
+            Station station = new Station();
+            station.setId(node.get("id").asString());
+            station.setEnglish(node.get("english").asString());
+            station.setName(node.get("name").asString());
+            station.setSystemId(node.id());
+            list.add(station);
+        }
+        testCase13.setCrossStation(list);
+        return testCase13;
     }
 }

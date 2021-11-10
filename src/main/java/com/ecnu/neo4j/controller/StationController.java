@@ -1,9 +1,6 @@
 package com.ecnu.neo4j.controller;
 
-import com.ecnu.neo4j.dto.TestCase10;
-import com.ecnu.neo4j.dto.TestCase111;
-import com.ecnu.neo4j.dto.TestCase2;
-import com.ecnu.neo4j.dto.TestCase7;
+import com.ecnu.neo4j.dto.*;
 import com.ecnu.neo4j.service.StationService;
 import com.ecnu.neo4j.service.impl.StationServiceImpl;
 
@@ -16,8 +13,8 @@ public class StationController {
 
     public Object listStationInfo(HttpServletRequest request) {
         String name = String.valueOf(request.getParameter("name"));
-        TestCase2 testCase1 = service.findStationInfo(name);
-        return testCase1;
+        return service.findStationInfo(name);
+
     }
 
 //    public Object listDepartInfo(HttpServletRequest request) {
@@ -28,12 +25,17 @@ public class StationController {
 
     public Object listNMostLine(HttpServletRequest request) {
         String num = String.valueOf(request.getParameter("num"));
-        List<TestCase10> testCase10 = service.findNMostLine(Integer.parseInt(num));
-        return testCase10;
+        return service.findNMostLine(Integer.parseInt(num));
     }
 
     public Object listCaseStation(HttpServletRequest request) {
-        TestCase111 testCase111 = service.findCaseStation();
-        return testCase111;
+        return service.findCaseStation();
+
+    }
+
+    public Object listCrossStation(HttpServletRequest request) {
+        String line1 = String.valueOf(request.getParameter("line1"));
+        String line2 = String.valueOf(request.getParameter("line2"));
+        return service.findCrossStation(line1, line2);
     }
 }

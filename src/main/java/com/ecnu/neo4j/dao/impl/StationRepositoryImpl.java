@@ -3,11 +3,13 @@ package com.ecnu.neo4j.dao.impl;
 import com.ecnu.neo4j.dao.StationRepository;
 import com.ecnu.neo4j.dto.TestCase10;
 import com.ecnu.neo4j.dto.TestCase111;
+import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.util.DB;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Value;
+import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
 
 import java.util.ArrayList;
@@ -147,5 +149,26 @@ public class StationRepositoryImpl implements StationRepository {
             e.printStackTrace();
         }
         return testCase111;
+    }
+
+    @Override
+    public List<Node> getCrossStation(String line1, String line2) {
+        List<Node> stationList = new ArrayList<>();
+        String cypher = "MATCH p=()-[*]-()\n" +
+                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = $line1)\n" +
+                "UNWIND NODES(p) as n\n" +
+                "WITH n, (n)-[]-() as p1\n" +
+                "UNWIND p1 as pp1\n" +
+                "WITH n, pp1\n" +
+                "WHERE ALL(r1 IN relationships(pp1) WHERE type(r1) = $line2)\n" +
+                "RETURN DISTINCT n\n";
+        Session session = DB.conn();
+        Result result = session.run(cypher, parameters("line1", line1, "line2", line2));
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            Node station = record.get("n").asNode();
+            stationList.add(station);
+        }
+        return stationList;
     }
 }
