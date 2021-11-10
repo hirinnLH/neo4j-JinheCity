@@ -41,6 +41,8 @@ http://localhost:8081/nosql/StationController/listNMostLine?num=15
 2分：统计地铁站、起点站、终点站数量，并返回站点名 
 http://localhost:8081/nosql/StationController/listCaseStation
 
+12.分组统计常规公交(包括干线、支线、城乡线、驳接线、社区线)、 快速公交(K字开头)、高峰公交(G字开头)、夜班公交(N字开头)的数量。(2分)
+http://localhost:8081/nosql/LineController/listLineTypeCount
 
 
 
