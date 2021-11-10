@@ -13,7 +13,9 @@ import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -152,7 +154,7 @@ public class StationRepositoryImpl implements StationRepository {
     }
 
     @Override
-    public List<Node> getCrossStation(String line1, String line2) {
+    public Map<String, Object> getCrossStation(String line1, String line2) {
         List<Node> stationList = new ArrayList<>();
         String cypher = "MATCH p=()-[*]-()\n" +
                 "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = $line1)\n" +
@@ -169,6 +171,9 @@ public class StationRepositoryImpl implements StationRepository {
             Node station = record.get("n").asNode();
             stationList.add(station);
         }
-        return stationList;
+        Map<String, Object> map = new HashMap<>();
+        map.put("stationList", stationList);
+        map.put("count", stationList.size());
+        return map;
     }
 }

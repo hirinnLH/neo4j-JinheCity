@@ -10,6 +10,7 @@ import org.neo4j.driver.types.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StationServiceImpl implements StationService {
 
@@ -109,8 +110,8 @@ public class StationServiceImpl implements StationService {
     public TestCase13 findCrossStation(String line1, String line2) {
         TestCase13 testCase13 = new TestCase13();
         List<Station> list = new ArrayList<>();
-        List<Node> nodeList = stationRepository.getCrossStation(line1, line2);
-        for(Node node:nodeList) {
+        Map<String, Object> map = stationRepository.getCrossStation(line1, line2);
+        for(Node node:(List<Node>)map.get("stationList")) {
             Station station = new Station();
             station.setId(node.get("id").asString());
             station.setEnglish(node.get("english").asString());
@@ -119,6 +120,7 @@ public class StationServiceImpl implements StationService {
             list.add(station);
         }
         testCase13.setCrossStation(list);
+        testCase13.setCount((int)map.get("count"));
         return testCase13;
     }
 }

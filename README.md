@@ -44,6 +44,8 @@ http://localhost:8081/nosql/StationController/listCaseStation
 12.分组统计常规公交(包括干线、支线、城乡线、驳接线、社区线)、 快速公交(K字开头)、高峰公交(G字开头)、夜班公交(N字开头)的数量。(2分)
 http://localhost:8081/nosql/LineController/listLineTypeCount
 
+13.查询15路上行和30路下行重复的站点名，并统计站点数。(2分)
+http://localhost:8081/nosql/StationController/listCrossStation?line1=15%E8%B7%AF%E4%B8%8A%E8%A1%8C&line2=30%E8%B7%AF%E4%B8%8B%E8%A1%8C
 
 
 

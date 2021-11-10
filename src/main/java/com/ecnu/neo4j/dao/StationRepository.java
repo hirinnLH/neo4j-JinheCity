@@ -7,6 +7,7 @@ import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StationRepository {
     //2.用线路名称返回沿路站点
@@ -18,5 +19,5 @@ public interface StationRepository {
     //11-1. 查询地铁站、终点站、始发站
     TestCase111 getCaseStation();
     //13 查询两路线的交叉站点
-    List<Node> getCrossStation(String line1, String line2);
+    Map<String, Object> getCrossStation(String line1, String line2);
 }

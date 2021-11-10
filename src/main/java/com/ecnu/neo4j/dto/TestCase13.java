@@ -9,4 +9,5 @@ import java.util.List;
 @Data
 public class TestCase13 {
     private List<Station> crossStation;
+    private int count;
 }
