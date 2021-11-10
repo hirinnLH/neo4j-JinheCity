@@ -16,34 +16,36 @@ public class LineController {
         String line_id = String.valueOf(request.getParameter("line_id"));
         //调用service的方法
         //LineService service = new LineServiceImpl();
-        TestCase1 lineInfoDto = service.findLineInfo(line_id);
-        return lineInfoDto;
+        return service.findLineInfo(line_id);
     }
 
     public Object listAlongLine(HttpServletRequest request) {
         String name = String.valueOf(request.getParameter("name"));
-        List<TestCase3> result = service.findAlongLine(name);
-        return result;
+        return service.findAlongLine(name);
     }
 
     public Object listRouteWithLineTen(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
-        TestCase4 testCase4 = service.findRouteWithLineTen(start, end);
-        return testCase4;
+        return service.findRouteWithLineTen(start, end);
+
     }
 
     public Object listShortestRouteByStationId(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
-        TestCase51 testCase51 = service.findShortestRouteByStationId(start, end);
-        return testCase51;
+        return service.findShortestRouteByStationId(start, end);
+
     }
 
     public Object listShortestRouteByStationName(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
-        TestCase52 testCase52 = service.findShortestRouteByStationName(start, end);
-        return testCase52;
+        return service.findShortestRouteByStationName(start, end);
+
+    }
+
+    public Object listLineTypeCount(HttpServletRequest request) {
+        return service.findLineTypeCount();
     }
 }

@@ -82,4 +82,10 @@ public class LineServiceImpl implements LineService {
         testCase52.setPath(path.toString());
         return testCase52;
     }
+
+    @Override
+    public List<TestCase12> findLineTypeCount() {
+        return lineRepository.getLineTypeCount();
+    }
+
 }

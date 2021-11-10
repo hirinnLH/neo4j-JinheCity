@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.dao.impl;
 
 import com.ecnu.neo4j.dao.LineRepository;
+import com.ecnu.neo4j.dto.TestCase12;
 import com.ecnu.neo4j.dto.TestCase3;
 import com.ecnu.neo4j.util.DB;
 import org.neo4j.driver.Record;
@@ -115,5 +116,23 @@ public class LineRepositoryImpl implements LineRepository {
             e.printStackTrace();
         }
         return path;
+    }
+
+    @Override
+    public List<TestCase12> getLineTypeCount() {
+        String cypher = "MATCH (l:Line)\n" +
+                "RETURN l.type as type, count(distinct l.id) as count\n" +
+                "ORDER BY count DESC\n";
+        List<TestCase12>  list = new ArrayList<>();
+        Session session = DB.conn();
+        Result result = session.run(cypher);
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            TestCase12 testCase12 = new TestCase12();
+            testCase12.setType(record.get("type").asString());
+            testCase12.setCount(record.get("count").asInt());
+            list.add(testCase12);
+        }
+        return list;
     }
 }

@@ -1,5 +1,6 @@
 package com.ecnu.neo4j.dao;
 
+import com.ecnu.neo4j.dto.TestCase12;
 import com.ecnu.neo4j.dto.TestCase3;
 import com.ecnu.neo4j.dto.TestCase4;
 import org.neo4j.driver.types.Path;
@@ -19,5 +20,5 @@ public interface LineRepository {
     //5-2.藉由站点的名称查询指定站点到另一站点的最短路径
     Path getShortestRouteByStationName(String startName, String endName);
     //12. 统计每一种类型的线路数量
-
+    List<TestCase12> getLineTypeCount();
 }

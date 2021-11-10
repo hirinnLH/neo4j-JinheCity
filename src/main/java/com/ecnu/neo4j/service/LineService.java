@@ -10,4 +10,5 @@ public interface LineService {
     TestCase4 findRouteWithLineTen(String start, String end);
     TestCase51 findShortestRouteByStationId(String startId, String endId);
     TestCase52 findShortestRouteByStationName(String startId, String endId);
+    List<TestCase12> findLineTypeCount();
 }
