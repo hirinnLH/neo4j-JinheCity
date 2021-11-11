@@ -38,7 +38,15 @@ public class LineServiceImpl implements LineService {
 
     @Override
     public List<TestCase3> findAlongLine(String name) {
-        return lineRepository.getLineAlongStation(name);
+        List<TestCase3> returnList = new ArrayList<>();
+        List<Map<String, Object>> mapList = lineRepository.getLineAlongStation(name);
+        for(Map<String, Object> map:mapList) {
+            TestCase3 testCase3 = new TestCase3();
+            testCase3.setAlongLine((List<Object>) map.get("lines"));
+            testCase3.setId((String) map.get("id"));
+            returnList.add(testCase3);
+        }
+        return returnList;
     }
 
     @Override
@@ -85,7 +93,15 @@ public class LineServiceImpl implements LineService {
 
     @Override
     public List<TestCase12> findLineTypeCount() {
-        return lineRepository.getLineTypeCount();
+        List<Map<String, Object>> mapList = lineRepository.getLineTypeCount();
+        List<TestCase12> list = new ArrayList<>();
+        for(Map<String, Object> map:mapList) {
+            TestCase12 testCase12 = new TestCase12();
+            testCase12.setCount((Integer) map.get("count"));
+            testCase12.setType((String) map.get("type"));
+            list.add(testCase12);
+        }
+        return list;
     }
 
 }

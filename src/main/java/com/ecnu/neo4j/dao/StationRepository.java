@@ -15,9 +15,9 @@ public interface StationRepository {
     //7.以线路名称查询班次信息
     //List<Path> getDepartInfo(String name);
     //10.查询停靠线路最多的前n个站点
-    List<TestCase10> getNMostLine(int num);
+    List<Map<String, Object>> getNMostLine(int num);
     //11-1. 查询地铁站、终点站、始发站
-    TestCase111 getCaseStation();
+    Map<String, Object> getCaseStation();
     //13 查询两路线的交叉站点
     Map<String, Object> getCrossStation(String line1, String line2);
 }

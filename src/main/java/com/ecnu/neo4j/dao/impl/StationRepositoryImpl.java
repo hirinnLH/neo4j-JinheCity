@@ -1,9 +1,6 @@
 package com.ecnu.neo4j.dao.impl;
 
 import com.ecnu.neo4j.dao.StationRepository;
-import com.ecnu.neo4j.dto.TestCase10;
-import com.ecnu.neo4j.dto.TestCase111;
-import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.util.DB;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -75,8 +72,8 @@ public class StationRepositoryImpl implements StationRepository {
 //    }
 
     @Override
-    public List<TestCase10> getNMostLine(int num) {
-        List<TestCase10> returnList = new ArrayList<>();
+    public List<Map<String, Object>> getNMostLine(int num) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
         String cypher = "MATCH p=()-[r]->() \n" +
                 "UNWIND nodes(p) as no\n" +
                 "WITH no, collect(distinct(type(r))) AS lines\n" +
@@ -88,11 +85,11 @@ public class StationRepositoryImpl implements StationRepository {
         Result result = session.run(cypher, parameters("num", num));
         List<Record> recordList = result.list();
         for(Record record:recordList) {
-            TestCase10 testCase10 = new TestCase10();
-            testCase10.setStationName(record.get("name").asString());
-            testCase10.setLineNum(record.get("size(lines)").asInt());
-            testCase10.setLineName(record.get("lines").asList());
-            returnList.add(testCase10);
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", record.get("name").asString());
+            map.put("size", record.get("size(lines)").asInt());
+            map.put("lines", record.get("lines").asList());
+            mapList.add(map);
         }
         session.close();
         try {
@@ -100,12 +97,12 @@ public class StationRepositoryImpl implements StationRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return returnList;
+        return mapList;
     }
 
     @Override
-    public TestCase111 getCaseStation() {
-        TestCase111 testCase111 = new TestCase111();
+    public Map<String, Object> getCaseStation() {
+        Map<String, Object> map = new HashMap<>();
         //查询地铁站的语句
         String subwayCypher = "MATCH (n:Station) \n" +
                 "WHERE n.name CONTAINS(\"地铁\") \n" +
@@ -122,27 +119,18 @@ public class StationRepositoryImpl implements StationRepository {
 
         //处理地铁站的信息
         Result result = session.run(subwayCypher);
-        List<Record> recordList = result.list();
-        for(Record record:recordList) {
-            Value value = record.get("count");
-            testCase111.setSubwayStation(value.asInt());
-        }
+        Record record = result.single();
+        map.put("subwayCount", record.get("count").asInt());
 
         //处理始发站信息
         result = session.run(initialCypher);
-        recordList = result.list();
-        for(Record record:recordList) {
-            Value value = record.get("count");
-            testCase111.setInitialStation(value.asInt());
-        }
+        record = result.single();
+        map.put("initialCount", record.get("count").asInt());
 
         //处理终点站信息
         result = session.run(endCypher);
-        recordList = result.list();
-        for(Record record:recordList) {
-            Value value = record.get("count");
-            testCase111.setEndStation(value.asInt());
-        }
+        record = result.single();
+        map.put("endCount", record.get("count").asInt());
 
         session.close();
         try {
@@ -150,7 +138,7 @@ public class StationRepositoryImpl implements StationRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return testCase111;
+        return map;
     }
 
     @Override
@@ -174,6 +162,13 @@ public class StationRepositoryImpl implements StationRepository {
         Map<String, Object> map = new HashMap<>();
         map.put("stationList", stationList);
         map.put("count", stationList.size());
+
+        session.close();
+        try {
+            DB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return map;
     }
 }

@@ -23,6 +23,7 @@ public class StationServiceImpl implements StationService {
         List<Station> stationList = new ArrayList<>();
         List<String> stringList = new ArrayList<>();
 
+
         Path path = stationRepository.getStationInfo(name);
 
         for(Node node: path.nodes()) {
@@ -98,12 +99,26 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<TestCase10> findNMostLine(int num) {
-        return stationRepository.getNMostLine(num);
+        List<Map<String, Object>> mapList = stationRepository.getNMostLine(num);
+        List<TestCase10> testCase10List = new ArrayList<>();
+        for(Map<String, Object> map:mapList) {
+            TestCase10 testCase10 = new TestCase10();
+            testCase10.setStationName((String) map.get("name"));
+            testCase10.setLineNum((Integer) map.get("size"));
+            testCase10.setLineName((List<Object>) map.get("lines"));
+            testCase10List.add(testCase10);
+        }
+        return testCase10List;
     }
 
     @Override
     public TestCase111 findCaseStation() {
-        return stationRepository.getCaseStation();
+        Map<String, Object> map = stationRepository.getCaseStation();
+        TestCase111 testCase111 = new TestCase111();
+        testCase111.setEndStation((Integer) map.get("endCount"));
+        testCase111.setInitialStation((Integer) map.get("initialCount"));
+        testCase111.setSubwayStation((Integer) map.get("subwayCount"));
+        return testCase111;
     }
 
     @Override
