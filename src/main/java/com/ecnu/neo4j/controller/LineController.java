@@ -1,16 +1,15 @@
 package com.ecnu.neo4j.controller;
 
-import com.ecnu.neo4j.dto.*;
 import com.ecnu.neo4j.service.LineService;
 import com.ecnu.neo4j.service.impl.LineServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public class LineController {
 
     private LineService service = new LineServiceImpl();
 
+    //需求1
     public Object listLineInfo(HttpServletRequest request) {
         //获取请求参数 LineController/listLineInfo?line_id=30
         String line_id = String.valueOf(request.getParameter("line_id"));
@@ -19,11 +18,13 @@ public class LineController {
         return service.findLineInfo(line_id);
     }
 
+    //需求3
     public Object listAlongLine(HttpServletRequest request) {
         String name = String.valueOf(request.getParameter("name"));
         return service.findAlongLine(name);
     }
 
+    //需求4
     public Object listRouteWithLineTen(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
@@ -31,6 +32,7 @@ public class LineController {
 
     }
 
+    //需求5-1
     public Object listShortestRouteByStationId(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
@@ -38,6 +40,7 @@ public class LineController {
 
     }
 
+    //需求5-2
     public Object listShortestRouteByStationName(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
@@ -45,7 +48,26 @@ public class LineController {
 
     }
 
+    //需求12
     public Object listLineTypeCount(HttpServletRequest request) {
         return service.findLineTypeCount();
+    }
+
+    //需求14-1
+    public Object listTransLineCount(HttpServletRequest request) {
+        String lineName = String.valueOf(request.getParameter("lineName"));
+        return service.findTransLintCount(lineName);
+    }
+
+    //需求14-2
+    public Object listTransLineName(HttpServletRequest request) {
+        String lineName = String.valueOf(request.getParameter("lineName"));
+        return service.findTransLineName(lineName);
+    }
+
+    //需求14-3
+    public Object listTransLineStation(HttpServletRequest request) {
+        String lineName = String.valueOf(request.getParameter("lineName"));
+        return service.findTransLineStation(lineName);
     }
 }

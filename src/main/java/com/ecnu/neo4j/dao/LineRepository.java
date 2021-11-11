@@ -1,8 +1,5 @@
 package com.ecnu.neo4j.dao;
 
-import com.ecnu.neo4j.dto.TestCase12;
-import com.ecnu.neo4j.dto.TestCase3;
-import com.ecnu.neo4j.dto.TestCase4;
 import org.neo4j.driver.types.Path;
 
 import java.util.List;
@@ -21,4 +18,10 @@ public interface LineRepository {
     Path getShortestRouteByStationName(String startName, String endName);
     //12. 统计每一种类型的线路数量
     List<Map<String, Object>> getLineTypeCount();
+    //14-1.查询261路上行一共有多少条可以换乘的线路
+    Integer getTransLineCount(String lineName);
+    //14-2. 查询261路上行的可以换乘的线路名称
+    List<String> getTransLineName(String lineName);
+    //14-3. 查询261路上行的站点分别能换乘的线路名称
+    List<Map<String, Object>> getTransLineStation(String lineName);
 }
