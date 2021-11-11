@@ -65,5 +65,8 @@ http://localhost:8081/nosql/LineController/listTransLineStation?lineName=261%E8%
 15.查询连接两个站台之间线路最多的两个站台并且按照降序排列，显示前15个。(2分)
 http://localhost:8081/nosql/StationController/listNMostLineStation?num=15
 
+16.根据站点数量对线路进行排序，显示前15条。(2分)
+http://localhost:8081/nosql/LineController/listNMostStationLine?num=15
+
 
 

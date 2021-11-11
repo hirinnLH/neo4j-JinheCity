@@ -14,4 +14,5 @@ public interface LineService {
     TestCase141 findTransLintCount(String lineName);
     TestCase142 findTransLineName(String lineName);
     List<TestCase143> findTransLineStation(String lineName);
+    List<TestCase16> findNMostStationLine(int num);
 }

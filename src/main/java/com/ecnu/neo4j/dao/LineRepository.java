@@ -24,4 +24,6 @@ public interface LineRepository {
     List<String> getTransLineName(String lineName);
     //14-3. 查询261路上行的站点分别能换乘的线路名称
     List<Map<String, Object>> getTransLineStation(String lineName);
+    //15. 根据站点数量对线路进行排序，显示前15条。
+    List<Map<String, Object>> getNMostStationLine(int num);
 }

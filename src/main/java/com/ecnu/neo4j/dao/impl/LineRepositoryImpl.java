@@ -227,4 +227,31 @@ public class LineRepositoryImpl implements LineRepository {
         }
         return mapList;
     }
+
+    @Override
+    public List<Map<String, Object>> getNMostStationLine(int num) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        String cypher = "MATCH p=()-[r]-()\n" +
+                "UNWIND NODES(p) as n\n" +
+                "RETURN type(r) as type, count(DISTINCT n) as num\n" +
+                "ORDER BY num DESC\n" +
+                "LIMIT $num\n";
+        Session session = DB.conn();
+        Result result = session.run(cypher, parameters("num", num));
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("type", record.get("type").asString());
+            map.put("count", record.get("num").asInt());
+            mapList.add(map);
+        }
+
+        session.close();
+        try {
+            DB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapList;
+    }
 }

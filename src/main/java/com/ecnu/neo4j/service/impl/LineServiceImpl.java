@@ -131,4 +131,17 @@ public class LineServiceImpl implements LineService {
         }
         return list;
     }
+
+    @Override
+    public List<TestCase16> findNMostStationLine(int num) {
+        List<TestCase16> list = new ArrayList<>();
+        List<Map<String, Object>> mapList = lineRepository.getNMostStationLine(num);
+        for(Map<String, Object> map:mapList) {
+            TestCase16 testCase16 = new TestCase16();
+            testCase16.setCount((Integer) map.get("count"));
+            testCase16.setType(map.get("type").toString());
+            list.add(testCase16);
+        }
+        return list;
+    }
 }

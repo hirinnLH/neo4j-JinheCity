@@ -70,4 +70,10 @@ public class LineController {
         String lineName = String.valueOf(request.getParameter("lineName"));
         return service.findTransLineStation(lineName);
     }
+
+    //需求16
+    public Object listNMostStationLine(HttpServletRequest request) {
+        String num = String.valueOf(request.getParameter("num"));
+        return service.findNMostStationLine(Integer.parseInt(num));
+    }
 }
