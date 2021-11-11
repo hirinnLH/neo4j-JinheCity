@@ -76,4 +76,10 @@ public class LineController {
         String num = String.valueOf(request.getParameter("num"));
         return service.findNMostStationLine(Integer.parseInt(num));
     }
+
+    //需求17
+    public Object listNMostTimeLine(HttpServletRequest request) {
+        String num = String.valueOf(request.getParameter("num"));
+        return service.findNMostTimeLine(Integer.parseInt(num));
+    }
 }

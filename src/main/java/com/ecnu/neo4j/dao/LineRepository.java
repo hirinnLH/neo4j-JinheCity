@@ -26,4 +26,6 @@ public interface LineRepository {
     List<Map<String, Object>> getTransLineStation(String lineName);
     //15. 根据站点数量对线路进行排序，显示前15条。
     List<Map<String, Object>> getNMostStationLine(int num);
+    //17.根据运行时间对线路进行排序(运行时间由班次数据计算而得)，显示前15条。
+    List<Map<String, Object>> getNMostTimeLine(int num);
 }

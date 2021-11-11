@@ -254,4 +254,23 @@ public class LineRepositoryImpl implements LineRepository {
         }
         return mapList;
     }
+
+    @Override
+    public List<Map<String, Object>> getNMostTimeLine(int num) {
+        String cypher = "MATCH p=()-[r]-()\n" +
+                "RETURN type(r) as type, count(r.runtime) as time\n" +
+                "ORDER BY time DESC\n" +
+                "LIMIT $num";
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        Session session = DB.conn();
+        Result result = session.run(cypher, parameters("num", num));
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("type", record.get("type").asString());
+            map.put("time", record.get("time").asInt());
+            mapList.add(map);
+        }
+        return mapList;
+    }
 }

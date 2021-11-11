@@ -144,4 +144,17 @@ public class LineServiceImpl implements LineService {
         }
         return list;
     }
+
+    @Override
+    public List<TestCase17> findNMostTimeLine(int num) {
+        List<Map<String, Object>> mapList = lineRepository.getNMostTimeLine(num);
+        List<TestCase17> list = new ArrayList<>();
+        for(Map<String, Object> map:mapList) {
+            TestCase17 testCase17 = new TestCase17();
+            testCase17.setTime((Integer) map.get("time"));
+            testCase17.setType(map.get("type").toString());
+            list.add(testCase17);
+        }
+        return list;
+    }
 }
