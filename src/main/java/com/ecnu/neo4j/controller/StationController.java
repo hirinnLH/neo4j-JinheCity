@@ -41,4 +41,10 @@ public class StationController {
         String line2 = String.valueOf(request.getParameter("line2"));
         return service.findCrossStation(line1, line2);
     }
+
+    //需求15
+    public Object listNMostLineStation(HttpServletRequest request) {
+        String num = String.valueOf(request.getParameter("num"));
+        return service.findNMostLineStation(Integer.parseInt(num));
+    }
 }

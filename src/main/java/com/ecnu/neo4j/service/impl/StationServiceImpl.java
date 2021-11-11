@@ -138,4 +138,20 @@ public class StationServiceImpl implements StationService {
         testCase13.setCount((int)map.get("count"));
         return testCase13;
     }
+
+    @Override
+    public List<TestCase15> findNMostLineStation(int num) {
+        List<Map<String, Object>> mapList = stationRepository.getNMostLineStation(num);
+        List<TestCase15> list = new ArrayList<>();
+        for(Map<String, Object> map:mapList) {
+            TestCase15 testCase15 = new TestCase15();
+            testCase15.setFromPlatform(map.get("fromId").toString());
+            testCase15.setToPlatform(map.get("toId").toString());
+            testCase15.setToStation(map.get("toName").toString());
+            testCase15.setFromStation(map.get("fromName").toString());
+            testCase15.setLineCount((Integer) map.get("count"));
+            list.add(testCase15);
+        }
+        return list;
+    }
 }

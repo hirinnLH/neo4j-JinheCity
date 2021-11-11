@@ -22,6 +22,7 @@ http://localhost:8081/nosql/LineController/listLineInfo?line_id=30
 http://localhost:8081/nosql/StationController/listStationInfo?name=2%E8%B7%AF%E4%B8%8A%E8%A1%8C
 
 3.查询锦城广场站停靠的所有线路。 (同名站点按ID分组，2分)
+
 http://localhost:8081/nosql/LineController/listAlongLine?name=%E9%94%A6%E5%9F%8E%E5%B9%BF%E5%9C%BA
 
 4.查询乘坐10路从大悦城到小吃街，线路的运行方向(上行或下行)、沿路站点、运行时长。
@@ -60,6 +61,9 @@ http://localhost:8081/nosql/LineController/listTransLineName?lineName=261%E8%B7%
 
 • 4分：统计沿线每个站点可以换乘的线路
 http://localhost:8081/nosql/LineController/listTransLineStation?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
+
+15.查询连接两个站台之间线路最多的两个站台并且按照降序排列，显示前15个。(2分)
+http://localhost:8081/nosql/StationController/listNMostLineStation?num=15
 
 
 

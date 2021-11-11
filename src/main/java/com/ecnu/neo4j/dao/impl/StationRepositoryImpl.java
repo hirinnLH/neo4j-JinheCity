@@ -171,4 +171,33 @@ public class StationRepositoryImpl implements StationRepository {
         }
         return map;
     }
+
+    @Override
+    public List<Map<String, Object>> getNMostLineStation(int num) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        String cypher = "MATCH p=(n)-[r]-(s)\n" +
+                "RETURN n.id, s.id, n.name, s.name, count(DISTINCT r.id) as num\n" +
+                "ORDER BY num DESC\n" +
+                "LIMIT $num\n";
+        Session session = DB.conn();
+        Result result = session.run(cypher, parameters("num", num));
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("fromId", record.get("n.id").asString());
+            map.put("toId", record.get("s.id").asString());
+            map.put("fromName", record.get("n.name").asString());
+            map.put("toName", record.get("s.name").asString());
+            map.put("count", record.get("num").asInt());
+            mapList.add(map);
+        }
+
+        session.close();
+        try {
+            DB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapList;
+    }
 }

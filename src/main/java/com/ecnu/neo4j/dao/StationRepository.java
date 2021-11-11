@@ -16,4 +16,6 @@ public interface StationRepository {
     Map<String, Object> getCaseStation();
     //13 查询两路线的交叉站点
     Map<String, Object> getCrossStation(String line1, String line2);
+    //15. 查询两站点之间线路最多的两个站点
+    List<Map<String, Object>> getNMostLineStation(int num);
 }
