@@ -3,9 +3,10 @@ package com.ecnu.neo4j.service;
 import com.ecnu.neo4j.dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StationService {
-    TestCase2 findStationInfo(String name);
+    List<TestCase2> findStationInfo(String name);
     //TestCase7 findDepartInfo(String name);
     List<TestCase10> findNMostLine(int num);
     TestCase111 findCaseStation();

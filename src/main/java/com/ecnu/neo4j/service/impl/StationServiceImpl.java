@@ -17,28 +17,20 @@ public class StationServiceImpl implements StationService {
     private StationRepository stationRepository = new StationRepositoryImpl();
 
     @Override
-    public TestCase2 findStationInfo(String name) {
-//        StationRepository stationRepository = new StationRepositoryImpl();
-        TestCase2 testCase1 = new TestCase2();
-        List<Station> stationList = new ArrayList<>();
-        List<String> stringList = new ArrayList<>();
+    public List<TestCase2> findStationInfo(String name) {
+        List<TestCase2> list = new ArrayList<>();
+        List<Map<String, Object>> mapList = stationRepository.getStationInfo(name);
 
-
-        Path path = stationRepository.getStationInfo(name);
-
-        for(Node node: path.nodes()) {
-            Station station = new Station();
-            station.setEnglish(node.get("english").asString());
-            station.setId(node.get("id").asString());
-            station.setName(node.get("name").asString());
-            station.setSystemId(node.id());
-            stationList.add(station);
+        for(Map<String, Object> map:mapList) {
+            TestCase2 testCase2 = new TestCase2();
+            testCase2.setEnglish(map.get("english").toString());
+            testCase2.setId(map.get("id").toString());
+            testCase2.setName(map.get("name").toString());
+            //station.setSystemId(map.id());
+            list.add(testCase2);
         }
-        stringList.add(path.toString());
 
-        testCase1.setAlongStation(stationList);
-        testCase1.setPath(stringList);
-        return testCase1;
+        return list;
     }
 
 //    @Override

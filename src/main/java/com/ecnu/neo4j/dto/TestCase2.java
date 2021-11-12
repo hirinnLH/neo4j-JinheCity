@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class TestCase2 {
-    List<Station> alongStation;
-    List<String> path;
+    private String id;
+    private String name;
+    private String english;
 }

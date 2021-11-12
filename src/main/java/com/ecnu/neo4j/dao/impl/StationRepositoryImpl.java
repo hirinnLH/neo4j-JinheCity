@@ -19,18 +19,22 @@ import static org.neo4j.driver.Values.parameters;
 public class StationRepositoryImpl implements StationRepository {
 
     @Override
-    public Path getStationInfo(String name) {
-
-        String cypher = "MATCH p=(n)-[r:`2路上行`*]->(s)\n" +
-                "WHERE NOT EXISTS (()-[]->(n)) AND NOT EXISTS ((s)-[]->())\n" +
-                "RETURN DISTINCT p\n";
+    public List<Map<String, Object>> getStationInfo(String name) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        String cypher = "MATCH p=(n)-[*]->(s)\n" +
+                "WHERE ALL(r in relationships(p) WHERE type(r)=$name) AND NOT EXISTS (()-[]->(n)) AND NOT EXISTS ((s)-[]->())\n" +
+                "UNWIND nodes(p) as node\n" +
+                "RETURN DISTINCT properties(node) as prop\n";
 
         //连接数据库，请求数据
         Session session = DB.conn();
         Result result = session.run(cypher, parameters("name", name));
-        Record record = result.single();
-        Value value = record.get("p");
-        Path path = value.asPath();
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            Value value = record.get("prop");
+            Map<String, Object> map = value.asMap();
+            mapList.add(map);
+        }
 
 
         session.close();
@@ -39,7 +43,7 @@ public class StationRepositoryImpl implements StationRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return path;
+        return mapList;
     }
 
 //    @Override
