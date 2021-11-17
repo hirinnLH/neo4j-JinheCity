@@ -25,10 +25,11 @@ public class LineController {
     }
 
     //需求4
-    public Object listRouteWithLineTen(HttpServletRequest request) {
+    public Object listRouteWithLine(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
-        return service.findRouteWithLineTen(start, end);
+        String lineId = String.valueOf(request.getParameter("lineId"));
+        return service.findRouteWithLine(start, end, lineId);
 
     }
 

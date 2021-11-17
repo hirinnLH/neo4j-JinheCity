@@ -7,7 +7,7 @@ import java.util.List;
 public interface LineService {
     TestCase1 findLineInfo(String line_id);
     List<TestCase3> findAlongLine(String name);
-    TestCase4 findRouteWithLineTen(String start, String end);
+    TestCase4 findRouteWithLine(String start, String end, String lineId);
     TestCase51 findShortestRouteByStationId(String startId, String endId);
     TestCase52 findShortestRouteByStationName(String startId, String endId);
     List<TestCase12> findLineTypeCount();

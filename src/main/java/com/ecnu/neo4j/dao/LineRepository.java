@@ -11,7 +11,7 @@ public interface LineRepository {
     //3.以站点名称查询经过该站点的线路
     List<Map<String, Object>> getLineAlongStation(String stationName);
     //4.获得10号线指定站点到另一站点的路线和用时
-    Path getRouteWithLineTen(String start, String end);
+    Path getRouteWithLine(String start, String end, String lineID);
     //5-1.藉由站点的id查询指定站点到另一站点的最短路径
     Path getShortestRouteByStationId(String startId, String endId);
     //5-2.藉由站点的名称查询指定站点到另一站点的最短路径

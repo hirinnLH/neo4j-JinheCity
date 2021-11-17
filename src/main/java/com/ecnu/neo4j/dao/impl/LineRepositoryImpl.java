@@ -60,15 +60,18 @@ public class LineRepositoryImpl implements LineRepository {
     }
 
     @Override
-    public Path getRouteWithLineTen(String start, String end) {
-        String cypher = "MATCH p=(n:Station {name:$start})-[:`10路上行`|`10路下行`*..10]->(s:Station {name:$end}) \n" +
-                "RETURN p";
-
+    public Path getRouteWithLine(String start, String end, String lineId) {
+        String cypher = "MATCH p=(n:Station {name:$start})-[*]->(s:Station {name:$end})\n" +
+                "WHERE ALL(r in relationships(p) WHERE r.id = $lineId)\n" +
+                "RETURN p\n";
+        Path path = null;
         Session session = DB.conn();
-        Result result = session.run(cypher, parameters("start", start, "end", end));
-        Record record = result.single();
-        Value value = record.get("p");
-        Path path = value.asPath();
+        Result result = session.run(cypher, parameters("start", start, "end", end, "lineId", lineId));
+        if(result.hasNext()) {
+            Record record = result.single();
+            Value value = record.get("p");
+            path = value.asPath();
+        }
 
         session.close();
         try {

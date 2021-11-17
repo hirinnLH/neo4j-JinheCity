@@ -25,6 +25,9 @@ public class LineServiceImpl implements LineService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if(map == null) {
+            return null;
+        }
         lineInfoDto.setLine_id((String) map.get("id"));
         lineInfoDto.setInterval((String) map.get("interval"));
         lineInfoDto.setDirectional((String) map.get("directional"));
@@ -50,8 +53,11 @@ public class LineServiceImpl implements LineService {
     }
 
     @Override
-    public TestCase4 findRouteWithLineTen(String start, String end) {
-        Path path = lineRepository.getRouteWithLineTen(start, end);
+    public TestCase4 findRouteWithLine(String start, String end, String lineId) {
+        Path path = lineRepository.getRouteWithLine(start, end, lineId);
+        if(path == null) {
+            return null;
+        }
         List<Station> stationList = new ArrayList<>();
         String direction = null;
         TestCase4 testCase4 = new TestCase4();
