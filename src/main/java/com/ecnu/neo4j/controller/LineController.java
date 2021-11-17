@@ -33,21 +33,29 @@ public class LineController {
 
     }
 
-    //需求5-1
-    public Object listShortestRouteByStationId(HttpServletRequest request) {
+    //需求5
+    public Object listShortestRouteByStation(HttpServletRequest request) {
         String start = String.valueOf(request.getParameter("start"));
         String end = String.valueOf(request.getParameter("end"));
-        return service.findShortestRouteByStationId(start, end);
+        return service.findShortestRouteByStation(start, end);
 
     }
 
-    //需求5-2
-    public Object listShortestRouteByStationName(HttpServletRequest request) {
-        String start = String.valueOf(request.getParameter("start"));
-        String end = String.valueOf(request.getParameter("end"));
-        return service.findShortestRouteByStationName(start, end);
-
-    }
+//    //需求5-1
+//    public Object listShortestRouteByStationId(HttpServletRequest request) {
+//        String start = String.valueOf(request.getParameter("start"));
+//        String end = String.valueOf(request.getParameter("end"));
+//        return service.findShortestRouteByStationId(start, end);
+//
+//    }
+//
+//    //需求5-2
+//    public Object listShortestRouteByStationName(HttpServletRequest request) {
+//        String start = String.valueOf(request.getParameter("start"));
+//        String end = String.valueOf(request.getParameter("end"));
+//        return service.findShortestRouteByStationName(start, end);
+//
+//    }
 
     //需求12
     public Object listLineTypeCount(HttpServletRequest request) {

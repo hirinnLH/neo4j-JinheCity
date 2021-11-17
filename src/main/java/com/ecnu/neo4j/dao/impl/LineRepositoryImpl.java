@@ -8,6 +8,8 @@ import org.neo4j.driver.Session;
 import org.neo4j.driver.Value;
 import org.neo4j.driver.types.Path;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,7 @@ public class LineRepositoryImpl implements LineRepository {
         return map;
     }
 
+    //需求3
     @Override
     public List<Map<String, Object>> getLineAlongStation(String stationName) {
         List<Map<String, Object>> mapList = new ArrayList<>();
@@ -59,6 +62,7 @@ public class LineRepositoryImpl implements LineRepository {
         return mapList;
     }
 
+    //需求4
     @Override
     public Path getRouteWithLine(String start, String end, String lineId) {
         String cypher = "MATCH p=(n:Station {name:$start})-[*]->(s:Station {name:$end})\n" +
@@ -82,15 +86,25 @@ public class LineRepositoryImpl implements LineRepository {
         return path;
     }
 
-    @Override
-    public Path getShortestRouteByStationId(String startId, String endId) {
-        String cypher = "MATCH p=shortestPath((n:Station {id:$startId})-[*]->(s:Station {id:$endId}))\n" +
-                "RETURN p";
+    //需求5
+    public Path getShortestRouteByStation(String start, String end) {
+        String cypher;
+        Path path = null;
+        if(StringUtils.isNumeric(start) && StringUtils.isNumeric(end)) {
+            cypher = "MATCH p=shortestPath((n:Station {id:$start})-[*]->(s:Station {id:$end}))\n" +
+                    "RETURN p";
+        }
+        else {
+            cypher = "MATCH p=shortestPath((n:Station {name:$start})-[*..10]->(s:Station {name:$end})) \n" +
+                    "RETURN p";
+        }
         Session session = DB.conn();
-        Result result = session.run(cypher, parameters("startId", startId, "endId", endId));
-        Record record = result.single();
-        Value value = record.get("p");
-        Path path = value.asPath();
+        Result result = session.run(cypher, parameters("start", start, "end", end));
+        if(result.hasNext()) {
+            Record record = result.single();
+            Value value = record.get("p");
+            path = value.asPath();
+        }
 
         session.close();
         try {
@@ -101,23 +115,43 @@ public class LineRepositoryImpl implements LineRepository {
         return path;
     }
 
-    public Path getShortestRouteByStationName(String startName, String endName) {
-        String cypher = "MATCH p=shortestPath((n:Station {name:$startName})-[*..10]->(s:Station {name:$endName})) \n" +
-                "RETURN p";
-        Session session = DB.conn();
-        Result result = session.run(cypher, parameters("startName", startName, "endName", endName));
-        Record record = result.single();
-        Value value = record.get("p");
-        Path path = value.asPath();
-
-        session.close();
-        try {
-            DB.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return path;
-    }
+//    //需求5-1
+//    @Override
+//    public Path getShortestRouteByStationId(String startId, String endId) {
+//        String cypher = "MATCH p=shortestPath((n:Station {id:$startId})-[*]->(s:Station {id:$endId}))\n" +
+//                "RETURN p";
+//        Session session = DB.conn();
+//        Result result = session.run(cypher, parameters("startId", startId, "endId", endId));
+//        Record record = result.single();
+//        Value value = record.get("p");
+//        Path path = value.asPath();
+//
+//        session.close();
+//        try {
+//            DB.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return path;
+//    }
+//
+//    public Path getShortestRouteByStationName(String startName, String endName) {
+//        String cypher = "MATCH p=shortestPath((n:Station {name:$startName})-[*..10]->(s:Station {name:$endName})) \n" +
+//                "RETURN p";
+//        Session session = DB.conn();
+//        Result result = session.run(cypher, parameters("startName", startName, "endName", endName));
+//        Record record = result.single();
+//        Value value = record.get("p");
+//        Path path = value.asPath();
+//
+//        session.close();
+//        try {
+//            DB.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return path;
+//    }
 
     @Override
     public List<Map<String, Object>> getLineTypeCount() {

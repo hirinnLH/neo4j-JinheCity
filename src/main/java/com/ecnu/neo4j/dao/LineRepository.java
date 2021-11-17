@@ -12,10 +12,12 @@ public interface LineRepository {
     List<Map<String, Object>> getLineAlongStation(String stationName);
     //4.获得10号线指定站点到另一站点的路线和用时
     Path getRouteWithLine(String start, String end, String lineID);
+    //5
+    Path getShortestRouteByStation(String start, String end);
     //5-1.藉由站点的id查询指定站点到另一站点的最短路径
-    Path getShortestRouteByStationId(String startId, String endId);
-    //5-2.藉由站点的名称查询指定站点到另一站点的最短路径
-    Path getShortestRouteByStationName(String startName, String endName);
+//    Path getShortestRouteByStationId(String startId, String endId);
+//    //5-2.藉由站点的名称查询指定站点到另一站点的最短路径
+//    Path getShortestRouteByStationName(String startName, String endName);
     //12. 统计每一种类型的线路数量
     List<Map<String, Object>> getLineTypeCount();
     //14-1.查询261路上行一共有多少条可以换乘的线路

@@ -81,21 +81,50 @@ public class LineServiceImpl implements LineService {
         return testCase4;
     }
 
+    //需求5
     @Override
-    public TestCase51 findShortestRouteByStationId(String startId, String endId) {
-        Path path = lineRepository.getShortestRouteByStationId(startId, endId);
-        TestCase51 testCase51 = new TestCase51();
-        testCase51.setPath(path.toString());
-        return testCase51;
+    public TestCase5 findShortestRouteByStation(String start, String end) {
+        Path path = lineRepository.getShortestRouteByStation(start, end);
+        if(path == null) {
+            return null;
+        }
+        TestCase5 testCase5 = new TestCase5();
+        List<String> transLine = new ArrayList<>();
+        for(Path.Segment segment:path) {
+            transLine.add(segment.relationship().type());
+        }
+        List<Station> alongStation = new ArrayList<>();
+        for(Node node:path.nodes()) {
+            Station station = new Station();
+            station.setSystemId(node.id());
+            station.setName(node.get("name").asString());
+            station.setEnglish(node.get("english").asString());
+            station.setId(node.get("id").asString());
+            alongStation.add(station);
+        }
+        testCase5.setTransLine(transLine);
+        testCase5.setAlongStation(alongStation);
+        return testCase5;
     }
 
-    @Override
-    public TestCase52 findShortestRouteByStationName(String startName, String endName) {
-        Path path = lineRepository.getShortestRouteByStationName(startName, endName);
-        TestCase52 testCase52 = new TestCase52();
-        testCase52.setPath(path.toString());
-        return testCase52;
-    }
+//    @Override
+//    public TestCase51 findShortestRouteByStationId(String startId, String endId) {
+//        Path path = lineRepository.getShortestRouteByStationId(startId, endId);
+//        if(path == null) {
+//            return null;
+//        }
+//        TestCase51 testCase51 = new TestCase51();
+//        testCase51.setPath(path.toString());
+//        return testCase51;
+//    }
+//
+//    @Override
+//    public TestCase52 findShortestRouteByStationName(String startName, String endName) {
+//        Path path = lineRepository.getShortestRouteByStationName(startName, endName);
+//        TestCase52 testCase52 = new TestCase52();
+//        testCase52.setPath(path.toString());
+//        return testCase52;
+//    }
 
     @Override
     public List<TestCase12> findLineTypeCount() {

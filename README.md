@@ -8,14 +8,10 @@ http://localhost:8081/nosql/StationController/listStationInfo?name=2%E8%B7%AF%E4
 http://localhost:8081/nosql/LineController/listAlongLine?name=%E9%94%A6%E5%9F%8E%E5%B9%BF%E5%9C%BA
 
 4.查询乘坐10路从大悦城到小吃街，线路的运行方向(上行或下行)、沿路站点、运行时长。
-http://localhost:8081/nosql/LineController/listRouteWithLineTen?start=%E5%A4%A7%E6%82%A6%E5%9F%8E&end=%E5%B0%8F%E5%90%83%E8%A1%97
+http://localhost:8081/nosql/LineController/listRouteWithLine?start=%E5%A4%A7%E6%82%A6%E5%9F%8E&end=%E5%B0%8F%E5%90%83%E8%A1%97&lineId=10
 
 5.查询从id为16115的站台(红瓦寺)到id为14768的站台(动物园)的最短路径。 
-• 使用id进行最短路径查询。
-http://localhost:8081/nosql/LineController/listShortestRouteByStationId?start=16115&end=14768
-
-• 使用name进行最短路径查询。
-http://localhost:8081/nosql/LineController/listShortestRouteByStationName?start=%E7%BA%A2%E7%93%A6%E5%AF%BA&end=%E5%8A%A8%E7%89%A9%E5%9B%AD
+http://localhost:8081/nosql/LineController/listShortestRouteByStation?start=%E7%BA%A2%E7%93%A6%E5%AF%BA&end=%E5%8A%A8%E7%89%A9%E5%9B%AD
 
 10.统计停靠路线最多的站点(按照id统计)并排序，显示前15个。 
 http://localhost:8081/nosql/StationController/listNMostLine?num=15

@@ -8,8 +8,9 @@ public interface LineService {
     TestCase1 findLineInfo(String line_id);
     List<TestCase3> findAlongLine(String name);
     TestCase4 findRouteWithLine(String start, String end, String lineId);
-    TestCase51 findShortestRouteByStationId(String startId, String endId);
-    TestCase52 findShortestRouteByStationName(String startId, String endId);
+    TestCase5 findShortestRouteByStation(String start, String end);
+//    TestCase51 findShortestRouteByStationId(String startId, String endId);
+//    TestCase52 findShortestRouteByStationName(String startId, String endId);
     List<TestCase12> findLineTypeCount();
     TestCase141 findTransLintCount(String lineName);
     TestCase142 findTransLineName(String lineName);
