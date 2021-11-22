@@ -10,6 +10,7 @@ import org.neo4j.driver.types.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class LineServiceImpl implements LineService {
@@ -130,12 +131,32 @@ public class LineServiceImpl implements LineService {
     public List<TestCase12> findLineTypeCount() {
         List<Map<String, Object>> mapList = lineRepository.getLineTypeCount();
         List<TestCase12> list = new ArrayList<>();
+        int normalCount = 0;
         for(Map<String, Object> map:mapList) {
             TestCase12 testCase12 = new TestCase12();
-            testCase12.setCount((Integer) map.get("count"));
-            testCase12.setType((String) map.get("type"));
-            list.add(testCase12);
+            if(map.get("type").toString().equals("高峰线")) {
+                testCase12.setCount((Integer) map.get("count"));
+                testCase12.setType("高峰公交");
+                list.add(testCase12);
+            }
+            else if(map.get("type").toString().equals("夜班线")) {
+                testCase12.setCount((Integer) map.get("count"));
+                testCase12.setType("夜班公交");
+                list.add(testCase12);
+            }
+            else if(map.get("type").toString().equals("快速公交")) {
+                testCase12.setCount((Integer) map.get("count"));
+                testCase12.setType((String) map.get("type"));
+                list.add(testCase12);
+            }
+            else {
+                normalCount += (Integer) map.get("count");
+            }
         }
+        TestCase12 testCase12 = new TestCase12();
+        testCase12.setCount(normalCount);
+        testCase12.setType("常规公交");
+        list.add(testCase12);
         return list;
     }
 
