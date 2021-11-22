@@ -110,6 +110,9 @@ public class StationServiceImpl implements StationService {
         testCase111.setEndStation((Integer) map.get("endCount"));
         testCase111.setInitialStation((Integer) map.get("initialCount"));
         testCase111.setSubwayStation((Integer) map.get("subwayCount"));
+        testCase111.setSubwayName((List<String>) map.get("subwayName"));
+        testCase111.setInitialName((List<String>) map.get("initialName"));
+        testCase111.setEndName((List<String>) map.get("endName"));
         return testCase111;
     }
 

@@ -108,33 +108,48 @@ public class StationRepositoryImpl implements StationRepository {
     public Map<String, Object> getCaseStation() {
         Map<String, Object> map = new HashMap<>();
         //查询地铁站的语句
-        String subwayCypher = "MATCH (n:Station) \n" +
-                "WHERE n.name CONTAINS(\"地铁\") \n" +
-                "RETURN count(DISTINCT n.name) as count\n";
+        String subwayCypher = "MATCH (n:Station)\n" +
+                "WHERE n.name CONTAINS(\"地铁\")\n" +
+                "RETURN distinct n.name\n";
         //查询始发站的语句
-        String initialCypher = "MATCH (n:Station) \n" +
-                "WHERE n.name CONTAINS(\"始发站\") \n" +
-                "RETURN count(DISTINCT n.name) as count\n";
+        String initialCypher = "MATCH (n:Station)\n" +
+                "WHERE n.name CONTAINS(\"始发站\")\n" +
+                "RETURN distinct n.name\n";
         //查询终点站的语句
-        String endCypher = "MATCH (n:Station) \n" +
-                "WHERE n.name CONTAINS(\"终点站\") \n" +
-                "RETURN count(DISTINCT n.name) as count\n";
+        String endCypher = "MATCH (n:Station)\n" +
+                "WHERE n.name CONTAINS(\"终点站\")\n" +
+                "RETURN distinct n.name\n";
         Session session = DB.conn();
 
         //处理地铁站的信息
+        List<String> subwayName = new ArrayList<>();
         Result result = session.run(subwayCypher);
-        Record record = result.single();
-        map.put("subwayCount", record.get("count").asInt());
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            subwayName.add(record.get("n.name").asString());
+        }
+        map.put("subwayName", subwayName);
+        map.put("subwayCount", subwayName.size());
 
         //处理始发站信息
+        List<String> initialName = new ArrayList<>();
         result = session.run(initialCypher);
-        record = result.single();
-        map.put("initialCount", record.get("count").asInt());
+        recordList = result.list();
+        for(Record record:recordList) {
+            initialName.add(record.get("n.name").asString());
+        }
+        map.put("initialName", initialName);
+        map.put("initialCount", initialName.size());
 
         //处理终点站信息
+        List<String> endName = new ArrayList<>();
         result = session.run(endCypher);
-        record = result.single();
-        map.put("endCount", record.get("count").asInt());
+        recordList = result.list();
+        for(Record record:recordList) {
+            endName.add(record.get("n.name").asString());
+        }
+        map.put("endName", endName);
+        map.put("endCount", endName.size());
 
         session.close();
         try {
