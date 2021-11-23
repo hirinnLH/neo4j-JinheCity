@@ -204,7 +204,7 @@ public class StationRepositoryImpl implements StationRepository {
     @Override
     public List<Map<String, Object>> getNMostLineStation(int num) {
         List<Map<String, Object>> mapList = new ArrayList<>();
-        String cypher = "MATCH p=(n)-[r]-(s)\n" +
+        String cypher = "MATCH p=(n:Station)-[r]->(s:Station)\n" +
                 "RETURN n.id, s.id, n.name, s.name, count(DISTINCT r.id) as num\n" +
                 "ORDER BY num DESC\n" +
                 "LIMIT $num\n";
@@ -213,8 +213,8 @@ public class StationRepositoryImpl implements StationRepository {
         List<Record> recordList = result.list();
         for(Record record:recordList) {
             Map<String, Object> map = new HashMap<>();
-            map.put("fromId", record.get("n.id").asString());
-            map.put("toId", record.get("s.id").asString());
+//            map.put("fromId", record.get("n.id").asString());
+//            map.put("toId", record.get("s.id").asString());
             map.put("fromName", record.get("n.name").asString());
             map.put("toName", record.get("s.name").asString());
             map.put("count", record.get("num").asInt());

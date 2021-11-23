@@ -141,8 +141,8 @@ public class StationServiceImpl implements StationService {
         List<TestCase15> list = new ArrayList<>();
         for(Map<String, Object> map:mapList) {
             TestCase15 testCase15 = new TestCase15();
-            testCase15.setFromPlatform(map.get("fromId").toString());
-            testCase15.setToPlatform(map.get("toId").toString());
+//            testCase15.setFromPlatform(map.get("fromId").toString());
+//            testCase15.setToPlatform(map.get("toId").toString());
             testCase15.setToStation(map.get("toName").toString());
             testCase15.setFromStation(map.get("fromName").toString());
             testCase15.setLineCount((Integer) map.get("count"));
