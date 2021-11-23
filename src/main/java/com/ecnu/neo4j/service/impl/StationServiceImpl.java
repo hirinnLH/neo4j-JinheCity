@@ -4,6 +4,7 @@ import com.ecnu.neo4j.dao.StationRepository;
 import com.ecnu.neo4j.dao.impl.StationRepositoryImpl;
 import com.ecnu.neo4j.dto.*;
 import com.ecnu.neo4j.entity.Station;
+import com.ecnu.neo4j.entity.StationWithoutEnglish;
 import com.ecnu.neo4j.service.StationService;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
@@ -110,9 +111,9 @@ public class StationServiceImpl implements StationService {
         testCase111.setEndStation((Integer) map.get("endCount"));
         testCase111.setInitialStation((Integer) map.get("initialCount"));
         testCase111.setSubwayStation((Integer) map.get("subwayCount"));
-        testCase111.setSubwayName((List<String>) map.get("subwayName"));
-        testCase111.setInitialName((List<String>) map.get("initialName"));
-        testCase111.setEndName((List<String>) map.get("endName"));
+        testCase111.setSubwayName((List<StationWithoutEnglish>) map.get("subwayName"));
+        testCase111.setInitialName((List<StationWithoutEnglish>) map.get("initialName"));
+        testCase111.setEndName((List<StationWithoutEnglish>) map.get("endName"));
         return testCase111;
     }
 
