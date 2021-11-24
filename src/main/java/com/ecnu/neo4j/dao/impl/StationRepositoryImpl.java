@@ -19,13 +19,14 @@ import static org.neo4j.driver.Values.parameters;
 
 public class StationRepositoryImpl implements StationRepository {
 
+    //环线N8这样判断的话无返回
     @Override
     public List<Map<String, Object>> getStationInfo(String name) {
         List<Map<String, Object>> mapList = new ArrayList<>();
         String cypher = "MATCH p=(n)-[*]->(s)\n" +
-                "WHERE ALL(r in relationships(p) WHERE type(r)=$name) AND NOT EXISTS (()-[]->(n)) AND NOT EXISTS ((s)-[]->())\n" +
+                "WHERE ALL(r in relationships(p) WHERE type(r)= $name) AND ANY(n in nodes(p) WHERE n.name CONTAINS \"始发站\")\n" +
                 "UNWIND nodes(p) as node\n" +
-                "RETURN DISTINCT properties(node) as prop\n";
+                "RETURN DISTINCT properties(node) as prop\n\n";
 
         //连接数据库，请求数据
         Session session = DB.conn();
