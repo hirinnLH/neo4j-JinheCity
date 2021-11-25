@@ -63,13 +63,15 @@ http://localhost:8081/nosql/LineController/listShortestRouteByStation?start=%E7%
     <li>班次查询</li>
 </ul>
 7.查询某条线路某个方向的全部班次信息。<br>
-http://localhost:8081/nosql/StationController/listDepartInfo?name=N8路<br>
-10.统计停靠路线最多的站点(按照id统计)并排序，显示前15个。 <br>
-http://localhost:8081/nosql/StationController/listNMostLine?num=15<br><br>
+http://localhost:8081/nosql/StationController/listDepartInfo?name=N8路<br><br>
 
 <ul>
     <li>分析查询</li>
 </ul>
+
+10.统计停靠路线最多的站点(按照id统计)并排序，显示前15个。 <br>
+http://localhost:8081/nosql/StationController/listNMostLine?num=15<br>
+
 11.统计地铁站数量(以地铁开头)、起点站(末尾标识始发站)数量、 终点站(末尾标识终点站)数量、单行站(比较上下行确定单行站)数量。 并返回站点名，注意去重。 <br>
 A: 统计地铁站、起点站、终点站数量，并返回站点名 <br>
 http://localhost:8081/nosql/StationController/listCaseStation<br>
