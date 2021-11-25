@@ -1,4 +1,5 @@
 import com.ecnu.neo4j.dto.TestCase2;
+import com.ecnu.neo4j.dto.TestCase7;
 import com.ecnu.neo4j.service.StationService;
 import com.ecnu.neo4j.service.impl.StationServiceImpl;
 import org.junit.Test;
@@ -17,6 +18,21 @@ public class StationTest {
             System.out.println("id: " + testCase2.getId());
             System.out.println("english: " + testCase2.getEnglish());
             System.out.println("name: " + testCase2.getName());
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void stationDepartTest() {
+        TestCase7 testCase7 = stationService.findDepartInfo("N8路");
+        for(String str:testCase7.getStationList()) {
+            System.out.print(str + " ");
+        }
+        System.out.println();
+        for(List<String> timeTable: testCase7.getTime()) {
+            for(String time:timeTable) {
+                System.out.print(time + " ");
+            }
             System.out.println();
         }
     }

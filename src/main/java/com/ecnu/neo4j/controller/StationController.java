@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.controller;
 
 
+import com.ecnu.neo4j.dto.TestCase7;
 import com.ecnu.neo4j.service.StationService;
 import com.ecnu.neo4j.service.impl.StationServiceImpl;
 
@@ -17,11 +18,12 @@ public class StationController {
 
     }
 
-//    public Object listDepartInfo(HttpServletRequest request) {
-//        String name = String.valueOf(request.getParameter("name"));
-//        TestCase7 testCase7 = service.findDepartInfo(name);
-//        return testCase7;
-//    }
+    //需求7
+    public Object listDepartInfo(HttpServletRequest request) {
+        String name = String.valueOf(request.getParameter("name"));
+        service.findDepartInfo(name);
+        return service.findDepartInfo(name);
+    }
 
     //需求10
     public Object listNMostLine(HttpServletRequest request) {
