@@ -37,11 +37,15 @@
 
 <h1>三.已实现需求</h1>
 请使用http://localhost:8081/nosql/controller名/方法名?参数= 访问对应需求<br><br>
-<li>基本信息查询</li>
+<ul>
+    <li>基本信息查询</li>
+</ul>
 1.查询30路公交的基本信息。
 http://localhost:8081/nosql/LineController/listLineInfo?line_id=30
 
-<br><li>站点查询</li>
+<ul>
+    <li>站点查询</li>
+</ul>
 2.查询2路上行的全部站点信息。(方向性、区分上下行、顺序性，)
 http://localhost:8081/nosql/StationController/listStationInfo?name=2%E8%B7%AF%E4%B8%8A%E8%A1%8C
 
@@ -54,13 +58,16 @@ http://localhost:8081/nosql/LineController/listRouteWithLine?start=%E5%A4%A7%E6%
 5.查询从id为16115的站台(红瓦寺)到id为14768的站台(动物园)的最短路径。 
 http://localhost:8081/nosql/LineController/listShortestRouteByStation?start=%E7%BA%A2%E7%93%A6%E5%AF%BA&end=%E5%8A%A8%E7%89%A9%E5%9B%AD
 
-
-<br><li>班次查询</li>
+<ul>
+    <li>班次查询</li>
+</ul>
 7.查询某条线路某个方向的全部班次信息。
 10.统计停靠路线最多的站点(按照id统计)并排序，显示前15个。 
 http://localhost:8081/nosql/StationController/listNMostLine?num=15
 
-<br><li>分析查询</li>
+<ul>
+    <li>分析查询</li>
+</ul>
 11.统计地铁站数量(以地铁开头)、起点站(末尾标识始发站)数量、 终点站(末尾标识终点站)数量、单行站(比较上下行确定单行站)数量。 并返回站点名，注意去重。 
 A: 统计地铁站、起点站、终点站数量，并返回站点名 
 http://localhost:8081/nosql/StationController/listCaseStation
@@ -72,15 +79,17 @@ http://localhost:8081/nosql/LineController/listLineTypeCount
 http://localhost:8081/nosql/StationController/listCrossStation?line1=15%E8%B7%AF%E4%B8%8A%E8%A1%8C&line2=30%E8%B7%AF%E4%B8%8B%E8%A1%8C
 
 14.查询261路上行一共有多少条可以换乘的线路，注意去重。 换乘线路数即261路上行停靠的所有站台停靠其他线路的数量的总和。
+<ul>
 
-<li>统计可以换乘的线路数量</li>
-http://localhost:8081/nosql/LineController/listTransLineCount?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
-
-<li>统计可以换乘的线路名称</li>
-http://localhost:8081/nosql/LineController/listTransLineName?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
-
-<li>统计沿线每个站点可以换乘的线路</li>
-http://localhost:8081/nosql/LineController/listTransLineStation?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
+    <li>统计可以换乘的线路数量</li>
+    http://localhost:8081/nosql/LineController/listTransLineCount?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
+    
+    <li>统计可以换乘的线路名称</li>
+    http://localhost:8081/nosql/LineController/listTransLineName?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
+    
+    <li>统计沿线每个站点可以换乘的线路</li>
+    http://localhost:8081/nosql/LineController/listTransLineStation?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
+</ul>
 
 15.查询连接两个站台之间线路最多的两个站台并且按照降序排列，显示前15个。
 http://localhost:8081/nosql/StationController/listNMostLineStation?num=15
