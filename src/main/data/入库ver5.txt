@@ -1,0 +1,46 @@
+-----清空数据库-----
+MATCH (n) DETACH DELETE n 
+
+-----Station入库-----
+LOAD CSV WITH HEADERS FROM "file:///stations.csv" AS line 
+CREATE (:Station {id:line.id, name:line.name, english:line.english})
+
+-----Line入库-----
+LOAD CSV WITH HEADERS FROM "file:///lines.csv" AS line 
+CREATE (:Line {id:line.name, name:line.id, directional:line.directional, interval:line.interval, kilometer:line.kilometer, onewayTime:line.onewayTime, route:line.route, runtime:line.runtime, type:line.type})
+
+-----关系节点入库-----
+LOAD CSV WITH HEADERS FROM "file:///station2station.csv" AS line 
+CREATE (:StationStationRelation {from:line.source, line_id:line.line_id,relation:line.name, runtime:line.runtime,to:line.destination})
+
+-----更正的时间信息以节点方式入库-----
+LOAD CSV WITH HEADERS FROM "file:///timetables4.csv" AS line
+CREATE (:TimeTables {name:line.name, timetable:line.timetable})
+
+-----关系节点将Line节点的信息以属性存放-----
+MATCH (n:StationStationRelation),(m:Line) 
+WHERE n.line_id = m.id
+SET n.directional=m.directional,n.interval=m.interval,n.kilometer=m.kilometer,n.onewayTime=m.onewayTime,n.route=m.route, n.type=m.type
+
+-----关系节点将更正的时间以属性存放-----
+MATCH (n:TimeTables),(m:StationStationRelation)
+WHERE m.relation = n.name
+SET m.timetable = n.timetable
+
+-----创建关系-----
+MATCH (n:Station),(m:StationStationRelation),(s:Station) 
+WHERE n.id = m.from AND m.to = s.id 
+CREATE (n)-[:StationStationRelation {relation:m.relation,id:m.line_id,directional:m.directional,interval:m.interval,kilometer:m.kilometer,onewayTime:m.onewayTime,route:m.route,runtime:m.runtime,timetable:m.timetable, type:m.type}] ->(s) 
+RETURN n.id,m.relation,m.line_id,s.id
+
+-----以具体线路作为关系名称-----
+MATCH (n:Station)-[r:StationStationRelation]->(m:Station)
+CALL apoc.create.relationship(n, r.relation, apoc.map.removeKey(PROPERTIES(r), 'relation'), m) YIELD rel
+DELETE r
+RETURN rel
+
+-----删除TimeTables节点-----
+MATCH (n:TimeTables) DELETE n
+
+-----删除StationStationRelation节点-----
+MATCH (n:StationStationRelation) DELETE n
