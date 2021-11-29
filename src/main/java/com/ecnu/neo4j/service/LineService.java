@@ -20,4 +20,5 @@ public interface LineService {
     List<TestCase16> findNMostStationLine(int num);
     List<TestCase17> findNMostTimeLine(int num);
     String addLine(String params);
+    String removeLine(String lineId);
 }

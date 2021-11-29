@@ -114,4 +114,9 @@ public class LineController {
 
         return service.addLine(lineInfoAndStations.toString());
     }
+
+    //需求20-1
+    public Object deleteLine(HttpServletRequest request) {
+        return service.removeLine(request.getParameter("lineId"));
+    }
 }

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
+import static org.neo4j.driver.Values.ofOffsetDateTime;
 import static org.neo4j.driver.Values.parameters;
 
 public class LineRepositoryImpl implements LineRepository {
@@ -418,5 +419,26 @@ public class LineRepositoryImpl implements LineRepository {
             e.printStackTrace();
         }
         return "插入成功";
+    }
+
+    @Override
+    public String cancelLine(String lineId) {
+        //delete line
+        String cypher = "MATCH (n:Line {id:$lineId}) DELETE n";
+
+        Session session = DB.conn();
+        session.run(cypher, parameters("lineId", lineId));
+
+        //delete alone stations
+        cypher = "MATCH (n:Station) WHERE NOT EXISTS((n)-[]-()) DELETE n";
+        session.run(cypher);
+
+        //search if the line still exists
+        cypher = "MATCH (n:Line {id:$lineId}) RETURN n";
+        Result result = session.run(cypher, parameters("lineId", lineId));
+        if(!result.hasNext()) {
+            return "删除成功";
+        }
+        return "删除失败";
     }
 }

@@ -275,4 +275,9 @@ public class LineServiceImpl implements LineService {
         //lineRepository.insertNewLine(line, stationInfoList);
         return "数据为空";
     }
+
+    @Override
+    public String removeLine(String lineId) {
+        return lineRepository.cancelLine(lineId);
+    }
 }

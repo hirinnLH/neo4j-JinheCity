@@ -34,5 +34,6 @@ public interface LineRepository {
     List<Map<String, Object>> getNMostTimeLine(int num);
     //19-1.添加一条站点数不少于10的线路。
     String newLine(Line line, List<Station> stationList);
-
+    //20-1. 删除某条线路，若沿途站点为该线路独有，也需要删除该站点。
+    String cancelLine(String lineId);
 }
