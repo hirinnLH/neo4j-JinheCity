@@ -339,14 +339,14 @@ public class LineRepositoryImpl implements LineRepository {
         session.run(cypher);
 
         //-----关系节点入库-----
-        if(directional == "TRUE") {
+        if(directional.equals("TRUE")) {
             for(int i = 0; i < stationList.size() - 1; i++) {
                 String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
                         "\", line_id:\"" + lineId +  "\",relation:\"" + lineName  + "上行" + "\", runtime:\"" + timetable +
                         "\",to:\"" + stationList.get(i+1).getId() + "\"})";
                 session.run(relationNode);
             }
-            for(int i = stationList.size(); i > 0; i--) {
+            for(int i = stationList.size()-1; i > 0; i--) {
                 String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
                         "\", line_id:\"" + lineId +  "\",relation:\"" + lineName + "下行" + "\", runtime:\"" + timetable +
                         "\",to:\"" + stationList.get(i-1).getId() + "\"})";
@@ -407,7 +407,7 @@ public class LineRepositoryImpl implements LineRepository {
                     break;
                 }
             }
-            if(isIn == false) {
+            if(!isIn) {
                 return "插入失败";
             }
         }

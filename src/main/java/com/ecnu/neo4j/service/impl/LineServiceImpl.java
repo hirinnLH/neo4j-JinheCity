@@ -220,7 +220,7 @@ public class LineServiceImpl implements LineService {
     @Override
     public String addLine(String params) {
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> map;
 
 
         if(StringUtils.isEmpty(params)) {
@@ -235,7 +235,7 @@ public class LineServiceImpl implements LineService {
         }
 
         Line line = new Line();
-        List<Station> list = new ArrayList<>();
+        List<Station> list;
         if(map != null) {
             if(map.get("line") instanceof Map) {
                 Map<String, String> map1 = (Map<String, String>) map.get("line");

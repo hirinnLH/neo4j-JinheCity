@@ -104,8 +104,8 @@ public class LineController {
     //需求19-1
     public Object insertLine(HttpServletRequest request) throws IOException {
         StringBuffer lineInfoAndStations = new StringBuffer();
-        String line= null;
-        BufferedReader reader = null;
+        String line;
+        BufferedReader reader;
 
         reader = request.getReader();
         while(null != (line = reader.readLine())) {
