@@ -165,6 +165,38 @@ public class StationRepositoryImpl implements StationRepository {
     }
 
     @Override
+    public Map<String, List<String>> getSingleDirectStation(String lineId) {
+        List<String> upGoing = new ArrayList<>();
+
+        String cypher = "MATCH p=()-[*]-()\n" +
+                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = \""+ lineId + "路上行\")\n" +
+                "UNWIND NODES(p) as n\n" +
+                "RETURN DISTINCT n.name as name\n";
+        Session session = DB.conn();
+        Result result = session.run(cypher, parameters("lineId", lineId));
+        List<Record> recordList = result.list();
+        for(Record record:recordList) {
+            upGoing.add(record.get("name").asString());
+        }
+
+        List<String> downGoing = new ArrayList<>();
+        cypher = "MATCH p=()-[*]-()\n" +
+                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = \"" + lineId + "路下行\")\n" +
+                "UNWIND NODES(p) as n\n" +
+                "RETURN DISTINCT n.name as name\n";
+        result = session.run(cypher, parameters("lineId", lineId));
+        recordList = result.list();
+        for(Record record:recordList) {
+            downGoing.add(record.get("name").asString());
+        }
+
+        Map<String, List<String>> map = new HashMap<>();
+        map.put("upGoing", upGoing);
+        map.put("downGoing", downGoing);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> getCrossStation(String line1, String line2) {
         List<Node> stationList = new ArrayList<>();
         String cypher = "MATCH p=()-[*]-()\n" +

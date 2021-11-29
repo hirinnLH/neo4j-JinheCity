@@ -439,6 +439,12 @@ public class LineRepositoryImpl implements LineRepository {
         if(!result.hasNext()) {
             return "删除成功";
         }
+        session.close();
+        try {
+            DB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "删除失败";
     }
 }

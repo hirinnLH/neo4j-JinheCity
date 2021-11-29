@@ -37,6 +37,11 @@ public class StationController {
 
     }
 
+    public Object listSingleDirectStation(HttpServletRequest request) {
+        String lineId = String.valueOf(request.getParameter("lineId"));
+        return service.findSingleDirectStation(lineId);
+    }
+
     //需求13
     public Object listCrossStation(HttpServletRequest request) {
         String line1 = String.valueOf(request.getParameter("line1"));

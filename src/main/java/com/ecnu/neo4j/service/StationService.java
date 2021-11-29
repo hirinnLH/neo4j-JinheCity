@@ -11,6 +11,7 @@ public interface StationService {
     TestCase7 findDepartInfo(String name);
     List<TestCase10> findNMostLine(int num);
     TestCase111 findCaseStation();
+    List<String> findSingleDirectStation(String lineId);
     TestCase13 findCrossStation(String line1, String line2);
     List<TestCase15> findNMostLineStation(int num);
 }

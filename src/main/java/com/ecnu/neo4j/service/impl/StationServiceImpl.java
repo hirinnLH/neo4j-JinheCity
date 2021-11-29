@@ -183,6 +183,27 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
+    public List<String> findSingleDirectStation(String lineId) {
+        Map<String, List<String>> map = stationRepository.getSingleDirectStation(lineId);
+        List<String> upGoing = map.get("upGoing");
+        List<String> downGoing = map.get("downGoing");
+
+        List<String> singleDirection = new ArrayList<>();
+        for(String str:upGoing) {
+            if(!downGoing.contains(str)) {
+                singleDirection.add(str);
+            }
+        }
+
+        for(String str:downGoing) {
+            if(!upGoing.contains(str)) {
+                singleDirection.add(str);
+            }
+        }
+        return singleDirection;
+    }
+
+    @Override
     public TestCase13 findCrossStation(String line1, String line2) {
         TestCase13 testCase13 = new TestCase13();
         List<Station> list = new ArrayList<>();
