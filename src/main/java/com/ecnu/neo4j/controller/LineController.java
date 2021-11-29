@@ -2,8 +2,17 @@ package com.ecnu.neo4j.controller;
 
 import com.ecnu.neo4j.service.LineService;
 import com.ecnu.neo4j.service.impl.LineServiceImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.Buffer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LineController {
 
@@ -90,5 +99,19 @@ public class LineController {
     public Object listNMostTimeLine(HttpServletRequest request) {
         String num = String.valueOf(request.getParameter("num"));
         return service.findNMostTimeLine(Integer.parseInt(num));
+    }
+
+    //需求19-1
+    public Object insertLine(HttpServletRequest request) throws IOException {
+        StringBuffer lineInfoAndStations = new StringBuffer();
+        String line= null;
+        BufferedReader reader = null;
+
+        reader = request.getReader();
+        while(null != (line = reader.readLine())) {
+            lineInfoAndStations.append(line);
+        }
+
+        return service.addLine(lineInfoAndStations.toString());
     }
 }

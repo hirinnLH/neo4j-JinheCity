@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.dao.impl;
 
 import com.ecnu.neo4j.dao.StationRepository;
+import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.entity.StationWithoutEnglish;
 import com.ecnu.neo4j.util.DB;
 import org.neo4j.driver.Record;

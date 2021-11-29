@@ -1,6 +1,8 @@
 package com.ecnu.neo4j.service;
 
 import com.ecnu.neo4j.dto.*;
+import com.ecnu.neo4j.entity.Line;
+import com.ecnu.neo4j.entity.Station;
 
 import java.util.List;
 
@@ -17,4 +19,5 @@ public interface LineService {
     List<TestCase143> findTransLineStation(String lineName);
     List<TestCase16> findNMostStationLine(int num);
     List<TestCase17> findNMostTimeLine(int num);
+    String addLine(String params);
 }

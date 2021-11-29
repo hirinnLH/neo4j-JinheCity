@@ -32,4 +32,33 @@ public class LineTest {
         TestCase5 testCase5 = service.findShortestRouteByStation("大悦城","小吃街");
         System.out.println(testCase5.getAlongStation());
     }
+
+    @Test
+    public void insertLineTest() {
+        String json = "{\n" +
+                "    \"line\": {\n" +
+                "        \"id\": \"3\",\n" +
+                "        \"route\": \"金和客运站-花明公交站\",\n" +
+                "        \"onewayTime\": \"约52分\",\n" +
+                "        \"directional\": \"TRUE\",\n" +
+                "        \"kilometer\": \"15\",\n" +
+                "        \"runtime\": \"6:00-23:59\",\n" +
+                "        \"interval\": \"5\",\n" +
+                "        \"type\": \"干线\"\n" +
+                "    },\n" +
+                "    \"stationList\": [\n" +
+                "        {\n" +
+                "            \"name\": \"金河客运站\",\n" +
+                "            \"english\": \"JinHeKeYun\",\n" +
+                "            \"id\": \"21460\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"name\": \"花明公交站\",\n" +
+                "            \"english\": \"HuaMing GJZ\",\n" +
+                "            \"id\": \"27680\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+        System.out.println(service.addLine(json));
+    }
 }

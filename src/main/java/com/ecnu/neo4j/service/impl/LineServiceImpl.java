@@ -3,15 +3,18 @@ package com.ecnu.neo4j.service.impl;
 import com.ecnu.neo4j.dao.LineRepository;
 import com.ecnu.neo4j.dao.impl.LineRepositoryImpl;
 import com.ecnu.neo4j.dto.*;
+import com.ecnu.neo4j.entity.Line;
 import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.service.LineService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 public class LineServiceImpl implements LineService {
 
@@ -212,5 +215,64 @@ public class LineServiceImpl implements LineService {
             list.add(testCase17);
         }
         return list;
+    }
+
+    @Override
+    public String addLine(String params) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String,Object> map = new HashMap<>();
+
+
+        if(StringUtils.isEmpty(params)) {
+            return null;
+        }
+
+        try {
+            map = objectMapper.readValue(params, Map.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "读取数据失败";
+        }
+
+        Line line = new Line();
+        List<Station> list = new ArrayList<>();
+        if(map != null) {
+            if(map.get("line") instanceof Map) {
+                Map<String, String> map1 = (Map<String, String>) map.get("line");
+                line.setLine_id(map1.get("id"));
+                line.setDirectional(map1.get("directional"));
+                line.setInterval(map1.get("interval"));
+                line.setType(map1.get("type"));
+                line.setKilometer(map1.get("kilometer"));
+                line.setRoute(map1.get("route"));
+                line.setOnewayTime(map1.get("onewayTime"));
+                line.setTimetable(map1.get("runtime"));
+            }
+//            if(map.get("stationList") instanceof List) {
+//
+//            }
+
+            try {
+//                String lineJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map.get("line"));
+                String stationsJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map.get("stationList"));
+//                line = objectMapper.readValue(lineJson, Line.class);
+                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Station.class);
+                list = objectMapper.readValue(stationsJson, javaType);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "数据解析失败";
+            }
+
+            List<Station> stationList = new ArrayList<>();
+            for(int i = 0; i < list.size(); i++) {
+                Station station = new Station();
+                //station.setId(list.get(i).getId());
+                station = list.get(i);
+                stationList.add(station);
+            }
+            return lineRepository.newLine(line, stationList);
+        }
+        //lineRepository.insertNewLine(line, stationInfoList);
+        return "数据为空";
     }
 }

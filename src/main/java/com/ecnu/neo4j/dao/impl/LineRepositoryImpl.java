@@ -1,6 +1,8 @@
 package com.ecnu.neo4j.dao.impl;
 
 import com.ecnu.neo4j.dao.LineRepository;
+import com.ecnu.neo4j.entity.Line;
+import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.util.DB;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -10,10 +12,7 @@ import org.neo4j.driver.types.Path;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -308,6 +307,116 @@ public class LineRepositoryImpl implements LineRepository {
             map.put("time", record.get("time").asInt());
             mapList.add(map);
         }
+
+        session.close();
+        try {
+            DB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return mapList;
+    }
+
+    @Override
+    public String newLine(Line line, List<Station> stationList) {
+        String lineName = line.getName();
+        String lineId = line.getLine_id();
+        String route = line.getRoute();
+        String onewayTime = line.getOnewayTime();
+        String directional = line.getDirectional();
+        String kilometer = line.getKilometer();
+        String interval = line.getInterval();
+        String type = line.getType();
+        String timetable = line.getTimetable();
+
+        //-----Line入库-----
+        String cypher = "CREATE (:Line {id:\"" + lineId + "\", directional:\"" + directional +
+                "\", interval:\"" + interval + "\", kilometer:\"" + kilometer + "\", onewayTime:\"" + onewayTime +
+                "\", route:\"" + route + "\", runtime:\"" + timetable + "\", type:\"" + type + "\"})";
+
+        Session session = DB.conn();
+        session.run(cypher);
+
+        //-----关系节点入库-----
+        if(directional == "TRUE") {
+            for(int i = 0; i < stationList.size() - 1; i++) {
+                String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
+                        "\", line_id:\"" + lineId +  "\",relation:\"" + lineName  + "上行" + "\", runtime:\"" + timetable +
+                        "\",to:\"" + stationList.get(i+1).getId() + "\"})";
+                session.run(relationNode);
+            }
+            for(int i = stationList.size(); i > 0; i--) {
+                String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
+                        "\", line_id:\"" + lineId +  "\",relation:\"" + lineName + "下行" + "\", runtime:\"" + timetable +
+                        "\",to:\"" + stationList.get(i-1).getId() + "\"})";
+                session.run(relationNode);
+            }
+        }
+        else {
+            for(int i = 0; i < stationList.size() - 1; i++) {
+                String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() + "\", line_id:\"" +
+                        lineId +  "\",relation:\"" + lineName + "\", runtime:\"" + timetable + "\",to:\"" + stationList.get(i+1).getId() + "\"})";
+                session.run(relationNode);
+            }
+        }
+
+        //-----关系节点将Line节点的信息以属性存放-----
+        String putProp = "MATCH (n:StationStationRelation),(m:Line) \n" +
+                "WHERE n.line_id = m.id\n" +
+                "SET n.directional=m.directional,n.interval=m.interval,n.kilometer=m.kilometer," +
+                "n.onewayTime=m.onewayTime,n.route=m.route, n.type=m.type";
+        session.run(putProp);
+
+        //-----创建关系-----
+        String createRelationship = "MATCH (n:Station),(m:StationStationRelation),(s:Station) \n" +
+                "WHERE n.id = m.from AND m.to = s.id \n" +
+                "CREATE (n)-[:StationStationRelation {relation:m.relation,id:m.line_id,directional:m.directional" +
+                ",interval:m.interval,kilometer:m.kilometer,onewayTime:m.onewayTime,route:m.route,runtime:m.runtime" +
+                ",timetable:m.timetable, type:m.type}] ->(s) ";
+        session.run(createRelationship);
+
+        //-----以具体线路作为关系名称-----
+        String putRelType = "MATCH (n:Station)-[r:StationStationRelation]->(m:Station)\n" +
+                "CALL apoc.create.relationship(n, r.relation, apoc.map.removeKey(PROPERTIES(r), 'relation'), m) YIELD rel\n" +
+                "DELETE r";
+        session.run(putRelType);
+
+        //-----删除StationStationRelation节点-----
+        String delRelationNode = "MATCH (n:StationStationRelation) DELETE n";
+        session.run(delRelationNode);
+
+        String checkInsert = "MATCH p=(n)-[*]->(s)\n" +
+                "WHERE ALL(r in relationships(p) WHERE r.id = $id)\n" +
+                "UNWIND nodes(p) as node\n" +
+                "RETURN DISTINCT properties(node) as prop\n";
+
+        Result result =  session.run(checkInsert, parameters("id", lineId));
+        List<Record> recordList = result.list();
+
+        for(Record record:recordList) {
+            boolean isIn = false;
+            Value value = record.get("prop");
+            Station station = new Station();
+            station.setEnglish(value.get("english").asString());
+            station.setName(value.get("name").asString());
+            station.setId(value.get("id").asString());
+            for(Station s:stationList) {
+                if(s.equals(station)) {
+                    isIn = true;
+                    break;
+                }
+            }
+            if(isIn == false) {
+                return "插入失败";
+            }
+        }
+
+        session.close();
+        try {
+            DB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "插入成功";
     }
 }
