@@ -61,4 +61,9 @@ public class LineTest {
                 "}";
         System.out.println(service.addLine(json));
     }
+
+    @Test
+    public void deleteLineTest() {
+        System.out.println(service.removeLine("3"));
+    }
 }

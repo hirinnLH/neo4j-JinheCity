@@ -20,7 +20,7 @@ import static org.neo4j.driver.Values.parameters;
 
 public class StationRepositoryImpl implements StationRepository {
 
-    //环线N8这样判断的话无返回
+    //使用contains可以返回环线
     @Override
     public List<Map<String, Object>> getStationInfo(String name) {
         List<Map<String, Object>> mapList = new ArrayList<>();

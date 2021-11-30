@@ -95,8 +95,10 @@ public class LineRepositoryImpl implements LineRepository {
                     "RETURN p";
         }
         else {
-            cypher = "MATCH p=shortestPath((n:Station {name:$start})-[*..10]->(s:Station {name:$end})) \n" +
-                    "RETURN p";
+            cypher = "MATCH p=shortestPath((n:Station {name:$start})-[*]->(s:Station {name:$endS})) \n" +
+                    "RETURN p\n" +
+                    "ORDER BY length(p)\n" +
+                    "LIMIT 1";
         }
         Session session = DB.conn();
         Result result = session.run(cypher, parameters("start", start, "end", end));
@@ -320,8 +322,8 @@ public class LineRepositoryImpl implements LineRepository {
 
     @Override
     public String newLine(Line line, List<Station> stationList) {
-        String lineName = line.getName();
         String lineId = line.getLine_id();
+        String lineName = lineId + "路";
         String route = line.getRoute();
         String onewayTime = line.getOnewayTime();
         String directional = line.getDirectional();
@@ -425,9 +427,13 @@ public class LineRepositoryImpl implements LineRepository {
     public String cancelLine(String lineId) {
         //delete line
         String cypher = "MATCH (n:Line {id:$lineId}) DELETE n";
+        String relationCypher = "MATCH p=()-[r]-() \n" +
+                "WHERE r.id = $lineId\n" +
+                "DELETE r\n";
 
         Session session = DB.conn();
         session.run(cypher, parameters("lineId", lineId));
+        session.run(relationCypher, parameters("lineId", lineId));
 
         //delete alone stations
         cypher = "MATCH (n:Station) WHERE NOT EXISTS((n)-[]-()) DELETE n";
@@ -435,8 +441,12 @@ public class LineRepositoryImpl implements LineRepository {
 
         //search if the line still exists
         cypher = "MATCH (n:Line {id:$lineId}) RETURN n";
+        relationCypher = "MATCH p=()-[]-() \n" +
+                "WHERE ALL(r in relationships(p) WHERE r.id = $lineId) \n" +
+                "RETURN p\n";
         Result result = session.run(cypher, parameters("lineId", lineId));
-        if(!result.hasNext()) {
+        Result result1 = session.run(relationCypher, parameters("lineId", lineId));
+        if(!result.hasNext() && !result1.hasNext()) {
             return "删除成功";
         }
         session.close();

@@ -102,7 +102,7 @@ public class StationServiceImpl implements StationService {
         }
         stationDepart.add(stationTime);
 
-        //查看最后一战的下一班是否还在运营时间内
+        //查看下一班的最后一站是否还在运营时间内
         String[] nowLastTime = stationDepart.get(stationDepart.size()-1).get(stationNames.size()-1).split(":");
         int nowLastHour = Integer.parseInt(nowLastTime[0]);
         int nowLastMinute = Integer.parseInt(nowLastTime[1]);
