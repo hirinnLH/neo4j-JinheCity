@@ -105,52 +105,52 @@ public class StationRepositoryImpl implements StationRepository {
         //查询地铁站的语句
         String subwayCypher = "MATCH (n:Station)\n" +
                 "WHERE n.name CONTAINS(\"地铁\")\n" +
-                "RETURN distinct n.id, n.name\n";
+                "RETURN distinct n.name\n";
         //查询始发站的语句
         String initialCypher = "MATCH (n:Station)\n" +
                 "WHERE n.name CONTAINS(\"始发站\")\n" +
-                "RETURN distinct n.id, n.name\n";
+                "RETURN distinct n.name\n";
         //查询终点站的语句
         String endCypher = "MATCH (n:Station)\n" +
                 "WHERE n.name CONTAINS(\"终点站\")\n" +
-                "RETURN distinct n.id, n.name\n";
+                "RETURN distinct n.name\n";
         Session session = DB.conn();
 
         //处理地铁站的信息
-        List<StationWithoutEnglish> subwayName = new ArrayList<>();
+        List<String> subwayName = new ArrayList<>();
         Result result = session.run(subwayCypher);
         List<Record> recordList = result.list();
         for(Record record:recordList) {
-            StationWithoutEnglish swe = new StationWithoutEnglish();
-            swe.setId(record.get("n.id").asString());
-            swe.setName(record.get("n.name").asString());
-            subwayName.add(swe);
+            //StationWithoutEnglish swe = new StationWithoutEnglish();
+            //swe.setId(record.get("n.id").asString());
+            //swe.setName(record.get("n.name").asString());
+            subwayName.add(record.get("n.name").asString());
         }
         map.put("subwayName", subwayName);
         map.put("subwayCount", subwayName.size());
 
         //处理始发站信息
-        List<StationWithoutEnglish> initialName = new ArrayList<>();
+        List<String> initialName = new ArrayList<>();
         result = session.run(initialCypher);
         recordList = result.list();
         for(Record record:recordList) {
-            StationWithoutEnglish swe = new StationWithoutEnglish();
-            swe.setId(record.get("n.id").asString());
-            swe.setName(record.get("n.name").asString());
-            initialName.add(swe);
+//            StationWithoutEnglish swe = new StationWithoutEnglish();
+//            swe.setId(record.get("n.id").asString());
+//            swe.setName(record.get("n.name").asString());
+            initialName.add(record.get("n.name").asString());
         }
         map.put("initialName", initialName);
         map.put("initialCount", initialName.size());
 
         //处理终点站信息
-        List<StationWithoutEnglish> endName = new ArrayList<>();
+        List<String> endName = new ArrayList<>();
         result = session.run(endCypher);
         recordList = result.list();
         for(Record record:recordList) {
-            StationWithoutEnglish swe = new StationWithoutEnglish();
-            swe.setId(record.get("n.id").asString());
-            swe.setName(record.get("n.name").asString());
-            endName.add(swe);
+//            StationWithoutEnglish swe = new StationWithoutEnglish();
+//            swe.setId(record.get("n.id").asString());
+//            swe.setName(record.get("n.name").asString());
+            endName.add(record.get("n.name").asString());
         }
         map.put("endName", endName);
         map.put("endCount", endName.size());

@@ -7,10 +7,10 @@ import java.util.List;
 
 @Data
 public class TestCase111 {
-    private List<StationWithoutEnglish> subwayName;
+    private List<String> subwayName;
     private int subwayStation;
-    private List<StationWithoutEnglish> initialName;
+    private List<String> initialName;
     private int initialStation;
-    private List<StationWithoutEnglish> endName;
+    private List<String> endName;
     private int endStation;
 }
