@@ -6,6 +6,8 @@ import java.util.List;
 
 @Data
 public class TestCase7 {
-    List<String> stationList;
-    List<List<String>> time;
+    String stationName;
+    List<String> arrivedTime;
+    //List<String> stationList;
+    //List<List<String>> time;
 }

@@ -35,12 +35,11 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public TestCase7 findDepartInfo(String name) {
+    public List<TestCase7> findDepartInfo(String name) {
+        List<TestCase7> result = new ArrayList<>();
         Path path = stationRepository.getDepartInfo(name);
         String startTime = null;         //开始运行时间
         Integer interval = 0;           //每一班的间隔
-        List<String> stationNames = new ArrayList<>();              //站点名称
-        List<List<String>> stationDepart = new ArrayList<>();       //总班次表
         List<Integer> timeTable = new ArrayList<>();                //站与站之间的时间间隔
         boolean needToRev = false;              //标记22:00-1:00这样跨天的现象
         //得到该班次的开始运行时间和间隔
@@ -65,12 +64,16 @@ public class StationServiceImpl implements StationService {
         }
         //途径站点
         for(Node node:path.nodes()) {
-            stationNames.add(node.get("name").asString());
+            TestCase7 testCase7 = new TestCase7();
+            testCase7.setStationName(node.get("name").asString());
+            result.add(testCase7);
+            List<String> eachStationTime = new ArrayList<>();
+            testCase7.setArrivedTime(eachStationTime);
         }
 
 
-        List<String> stationTime = new ArrayList<>();
-        for (int i = 0; i < stationNames.size(); i++) {
+        for (int i = 0; i < result.size(); i++) {
+            List<String> eachStationTime = result.get(i).getArrivedTime();
             if (minute >= 60) {
                 hour += 1;
                 minute -= 60;
@@ -82,28 +85,30 @@ public class StationServiceImpl implements StationService {
             if (minute / 10 == 0) {
                 //处理跨天现象
                 if(needToRev) {
-                    stationTime.add(hour+12 + ":0" + minute);
+                    eachStationTime.add(hour+12 + ":0" + minute);
                 }
                 else {
-                    stationTime.add(hour + ":0" + minute);
+                    eachStationTime.add(hour + ":0" + minute);
                 }
             } else {
                 if(needToRev) {
-                    stationTime.add(hour+12 + ":" + minute);
+                    eachStationTime.add(hour+12 + ":" + minute);
+                    //stationTime.add(hour+12 + ":" + minute);
                 }
                 else {
-                    stationTime.add(hour + ":" + minute);
+                    eachStationTime.add(hour + ":" + minute);
                 }
             }
-            if (i == stationNames.size() - 1) {
+            result.get(i).setArrivedTime(eachStationTime);
+            if (i == result.size() - 1) {
                 break;
             }
             minute += timeTable.get(i);
         }
-        stationDepart.add(stationTime);
 
         //查看下一班的最后一站是否还在运营时间内
-        String[] nowLastTime = stationDepart.get(stationDepart.size()-1).get(stationNames.size()-1).split(":");
+        List<String> lastStationTime = result.get(result.size() - 1).getArrivedTime();
+        String[] nowLastTime = lastStationTime.get(lastStationTime.size()-1).split(":");
         int nowLastHour = Integer.parseInt(nowLastTime[0]);
         int nowLastMinute = Integer.parseInt(nowLastTime[1]);
         nowLastMinute+=interval;
@@ -116,10 +121,11 @@ public class StationServiceImpl implements StationService {
         }
 
         while(nowLastHour < endHour || ((nowLastHour == endHour) && (nowLastMinute <= endMinute))) {
-            List<String> stationTime1 = new ArrayList<>();
-            List<String> baseCul = stationDepart.get(stationDepart.size()-1);
-            for(int i = 0; i < stationNames.size(); i++) {
-                String[] cul = baseCul.get(i).split(":");
+
+            for(int i = 0; i < result.size(); i++) {
+                List<String> eachStationTime = result.get(i).getArrivedTime();
+                String baseCul = eachStationTime.get(eachStationTime.size()-1);
+                String[] cul = baseCul.split(":");
                 int minCul = Integer.parseInt(cul[1]);
                 int hourCul = Integer.parseInt(cul[0]);
                 minCul+=interval;
@@ -131,11 +137,11 @@ public class StationServiceImpl implements StationService {
                     hourCul -= 24;
                 }
                 if (minCul / 10 == 0) {
-                    stationTime1.add(hourCul + ":0" + minCul);
+                    eachStationTime.add(hourCul + ":0" + minCul);
                 } else {
-                    stationTime1.add(hourCul + ":" + minCul);
+                    eachStationTime.add(hourCul + ":" + minCul);
                 }
-                if (i == stationNames.size() - 1) {
+                if (i == result.size() - 1) {
                     //nowLastHour+=interval;
                     nowLastMinute+=interval;
                     if (nowLastMinute >= 60) {
@@ -147,12 +153,8 @@ public class StationServiceImpl implements StationService {
 //                    }
                 }
             }
-            stationDepart.add(stationTime1);
         }
-        TestCase7 testCase7 = new TestCase7();
-        testCase7.setStationList(stationNames);
-        testCase7.setTime(stationDepart);
-        return testCase7;
+        return result;
     }
 
     @Override

@@ -22,20 +22,32 @@ public class StationTest {
         }
     }
 
+//    @Test
+//    public void stationDepartTest() {
+//        TestCase7 testCase7 = stationService.findDepartInfo("N8路");
+//        for(String str:testCase7.getStationList()) {
+//            System.out.print(str + " ");
+//        }
+//        System.out.println();
+//        for(List<String> timeTable: testCase7.getTime()) {
+//            for(String time:timeTable) {
+//                System.out.print(time + " ");
+//            }
+//            System.out.println();
+//        }
+//    }
+
     @Test
     public void stationDepartTest() {
-        TestCase7 testCase7 = stationService.findDepartInfo("N8路");
-        for(String str:testCase7.getStationList()) {
-            System.out.print(str + " ");
-        }
-        System.out.println();
-        for(List<String> timeTable: testCase7.getTime()) {
-            for(String time:timeTable) {
-                System.out.print(time + " ");
+        List<TestCase7> testCase7List = stationService.findDepartInfo("N8路");
+        for(TestCase7 testCase7:testCase7List) {
+            System.out.print(testCase7.getStationName() + ": ");
+            for(String str:testCase7.getArrivedTime()) {
+                System.out.print(str + " ");
             }
             System.out.println();
+            //System.out.println(testCase7.getArrivedTime());
         }
     }
-
 
 }

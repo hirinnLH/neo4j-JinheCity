@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface StationService {
     List<TestCase2> findStationInfo(String name);
-    TestCase7 findDepartInfo(String name);
+    List<TestCase7> findDepartInfo(String name);
     List<TestCase10> findNMostLine(int num);
     TestCase111 findCaseStation();
     List<String> findSingleDirectStation(String lineId);
