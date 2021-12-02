@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 @WebServlet("/")
 public class DispatcherServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //1.中文编码的处理
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");

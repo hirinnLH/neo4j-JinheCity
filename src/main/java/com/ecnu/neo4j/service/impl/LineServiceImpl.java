@@ -186,6 +186,7 @@ public class LineServiceImpl implements LineService {
             TestCase143 testCase143 = new TestCase143();
             testCase143.setName(map.get("name").toString());
             testCase143.setType((List<String>) map.get("type"));
+            testCase143.setLineCnt(testCase143.getType().size());
             list.add(testCase143);
         }
         return list;

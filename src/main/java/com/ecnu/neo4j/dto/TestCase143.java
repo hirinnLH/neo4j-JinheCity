@@ -8,4 +8,5 @@ import java.util.List;
 public class TestCase143 {
     private String name;
     private List<String> type;
+    private int lineCnt;
 }
