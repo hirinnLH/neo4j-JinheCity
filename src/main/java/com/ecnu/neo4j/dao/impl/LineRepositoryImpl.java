@@ -342,7 +342,7 @@ public class LineRepositoryImpl implements LineRepository {
         line.setOnewayTime(onewayTime);
 
         //查看数据库中是否已经有该线路id
-        String checkExist = "CREATE (l:Line {id:\"" + lineId +"\"})\n" +
+        String checkExist = "MATCH (l:Line {id:\"" + lineId +"\"})\n" +
                         "RETURN l";
         Session session = DB.conn();
         Result result = session.run(checkExist);
@@ -362,21 +362,22 @@ public class LineRepositoryImpl implements LineRepository {
         if(directional.equals("TRUE")) {
             for(int i = 0; i < stationList.size() - 1; i++) {
                 String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
-                        "\", line_id:\"" + lineId +  "\",relation:\"" + lineName  + "上行" + "\", runtime:\"" + timetable +
-                        "\",to:\"" + stationList.get(i+1).getId() + "\"})";
+                        "\", line_id:\"" + lineId +  "\",relation:\"" + lineName  + "上行" + "\", runtime:\"" +
+                        stationList.get(i+1).getRuntime() + "\",to:\"" + stationList.get(i+1).getId() + "\"})";
                 session.run(relationNode);
             }
             for(int i = stationList.size()-1; i > 0; i--) {
                 String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
-                        "\", line_id:\"" + lineId +  "\",relation:\"" + lineName + "下行" + "\", runtime:\"" + timetable +
-                        "\",to:\"" + stationList.get(i-1).getId() + "\"})";
+                        "\", line_id:\"" + lineId +  "\",relation:\"" + lineName + "下行" + "\", runtime:\"" +
+                        stationList.get(i).getRuntime() + "\",to:\"" + stationList.get(i-1).getId() + "\"})";
                 session.run(relationNode);
             }
         }
         else {
             for(int i = 0; i < stationList.size() - 1; i++) {
                 String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() + "\", line_id:\"" +
-                        lineId +  "\",relation:\"" + lineName + "\", runtime:\"" + timetable + "\",to:\"" + stationList.get(i+1).getId() + "\"})";
+                        lineId +  "\",relation:\"" + lineName + "\", runtime:\"" + stationList.get(i+1).getRuntime() +
+                        "\",to:\"" + stationList.get(i+1).getId() + "\"})";
                 session.run(relationNode);
             }
         }
@@ -385,7 +386,7 @@ public class LineRepositoryImpl implements LineRepository {
         String putProp = "MATCH (n:StationStationRelation),(m:Line) \n" +
                 "WHERE n.line_id = m.id\n" +
                 "SET n.directional=m.directional,n.interval=m.interval,n.kilometer=m.kilometer," +
-                "n.onewayTime=m.onewayTime,n.route=m.route, n.type=m.type";
+                "n.onewayTime=m.onewayTime,n.route=m.route, n.type=m.type, n.timetable=m.runtime";
         session.run(putProp);
 
         //-----创建关系-----

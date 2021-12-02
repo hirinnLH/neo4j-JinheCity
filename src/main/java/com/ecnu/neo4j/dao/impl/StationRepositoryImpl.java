@@ -52,7 +52,7 @@ public class StationRepositoryImpl implements StationRepository {
     @Override
     public Path getDepartInfo(String name) {
         String cypher = "MATCH p=()-[*]->()\n" +
-                "WHERE ALL(r in relationships(p) WHERE type(r) = $name) AND ANY(n in nodes(p) WHERE n.name CONTAINS \"(始发站)\")\n" +
+                "WHERE ALL(r in relationships(p) WHERE type(r) = $name)\n" +
                 "RETURN p\n" +
                 "ORDER BY length(p) DESC\n" +
                 "LIMIT 1\n";
