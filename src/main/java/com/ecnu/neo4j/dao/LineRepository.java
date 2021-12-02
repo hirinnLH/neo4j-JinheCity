@@ -1,5 +1,6 @@
 package com.ecnu.neo4j.dao;
 
+import com.ecnu.neo4j.dto.TestCase19;
 import com.ecnu.neo4j.entity.Line;
 import com.ecnu.neo4j.entity.Station;
 import org.neo4j.driver.types.Path;
@@ -33,7 +34,7 @@ public interface LineRepository {
     //17.根据运行时间对线路进行排序(运行时间由班次数据计算而得)，显示前15条。
     List<Map<String, Object>> getNMostTimeLine(int num);
     //19-1.添加一条站点数不少于10的线路。
-    String newLine(Line line, List<Station> stationList);
+    String newLine(Line line, List<TestCase19> stationList);
     //20-1. 删除某条线路，若沿途站点为该线路独有，也需要删除该站点。
     String cancelLine(String lineId);
 }

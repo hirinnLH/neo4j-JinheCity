@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.dao.impl;
 
 import com.ecnu.neo4j.dao.LineRepository;
+import com.ecnu.neo4j.dto.TestCase19;
 import com.ecnu.neo4j.entity.Line;
 import com.ecnu.neo4j.entity.Station;
 import com.ecnu.neo4j.util.DB;
@@ -321,23 +322,40 @@ public class LineRepositoryImpl implements LineRepository {
     }
 
     @Override
-    public String newLine(Line line, List<Station> stationList) {
+    public String newLine(Line line, List<TestCase19> stationList) {
         String lineId = line.getLine_id();
         String lineName = lineId + "路";
         String route = line.getRoute();
-        String onewayTime = line.getOnewayTime();
+        //String onewayTime = line.getOnewayTime();
         String directional = line.getDirectional();
         String kilometer = line.getKilometer();
         String interval = line.getInterval();
         String type = line.getType();
         String timetable = line.getTimetable();
 
+        int timeSum = 0;
+        for(TestCase19 tc:stationList) {
+            if(tc == stationList.get(0)) continue;
+            timeSum+=Integer.parseInt(tc.getRuntime());
+        }
+        String onewayTime = String.valueOf(timeSum);
+        line.setOnewayTime(onewayTime);
+
+        //查看数据库中是否已经有该线路id
+        String checkExist = "CREATE (l:Line {id:\"" + lineId +"\"})\n" +
+                        "RETURN l";
+        Session session = DB.conn();
+        Result result = session.run(checkExist);
+        if(result.hasNext()) {
+            return "已存在该线路";
+        }
+
         //-----Line入库-----
         String cypher = "CREATE (:Line {id:\"" + lineId + "\", directional:\"" + directional +
                 "\", interval:\"" + interval + "\", kilometer:\"" + kilometer + "\", onewayTime:\"" + onewayTime +
                 "\", route:\"" + route + "\", runtime:\"" + timetable + "\", type:\"" + type + "\"})";
 
-        Session session = DB.conn();
+
         session.run(cypher);
 
         //-----关系节点入库-----
@@ -391,20 +409,21 @@ public class LineRepositoryImpl implements LineRepository {
         String checkInsert = "MATCH p=(n)-[*]->(s)\n" +
                 "WHERE ALL(r in relationships(p) WHERE r.id = $id)\n" +
                 "UNWIND nodes(p) as node\n" +
-                "RETURN DISTINCT properties(node) as prop\n";
+                "RETURN DISTINCT node.id as id\n";
 
-        Result result =  session.run(checkInsert, parameters("id", lineId));
+        result =  session.run(checkInsert, parameters("id", lineId));
         List<Record> recordList = result.list();
 
         for(Record record:recordList) {
             boolean isIn = false;
-            Value value = record.get("prop");
-            Station station = new Station();
-            station.setEnglish(value.get("english").asString());
-            station.setName(value.get("name").asString());
-            station.setId(value.get("id").asString());
-            for(Station s:stationList) {
-                if(s.equals(station)) {
+            Value value = record.get("id");
+            String resultId = value.asString();
+//            Station station = new Station();
+//            station.setEnglish(value.get("english").asString());
+//            station.setName(value.get("name").asString());
+//            station.setId(value.get("id").asString());
+            for(TestCase19 s:stationList) {
+                if(s.getId().equals(resultId)) {
                     isIn = true;
                     break;
                 }

@@ -235,7 +235,7 @@ public class LineServiceImpl implements LineService {
         }
 
         Line line = new Line();
-        List<Station> list;
+        List<Map<String, String>> list;
         if(map != null) {
             if(map.get("line") instanceof Map) {
                 Map<String, String> map1 = (Map<String, String>) map.get("line");
@@ -245,7 +245,7 @@ public class LineServiceImpl implements LineService {
                 line.setType(map1.get("type"));
                 line.setKilometer(map1.get("kilometer"));
                 line.setRoute(map1.get("route"));
-                line.setOnewayTime(map1.get("onewayTime"));
+//                line.setOnewayTime(map1.get("onewayTime"));
                 line.setTimetable(map1.get("runtime"));
             }
 //            if(map.get("stationList") instanceof List) {
@@ -256,19 +256,20 @@ public class LineServiceImpl implements LineService {
 //                String lineJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map.get("line"));
                 String stationsJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map.get("stationList"));
 //                line = objectMapper.readValue(lineJson, Line.class);
-                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Station.class);
+                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Map.class);
                 list = objectMapper.readValue(stationsJson, javaType);
             } catch (IOException e) {
                 e.printStackTrace();
                 return "数据解析失败";
             }
 
-            List<Station> stationList = new ArrayList<>();
+            List<TestCase19> stationList = new ArrayList<>();
             for(int i = 0; i < list.size(); i++) {
-                Station station = new Station();
+                TestCase19 testCase19 = new TestCase19();
+                testCase19.setId(list.get(i).get("id"));
+                testCase19.setRuntime(list.get(i).get("runtime"));
                 //station.setId(list.get(i).getId());
-                station = list.get(i);
-                stationList.add(station);
+                stationList.add(testCase19);
             }
             return lineRepository.newLine(line, stationList);
         }
