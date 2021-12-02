@@ -7,5 +7,6 @@ import java.util.List;
 
 @Data
 public class TestCase112 {
-    private List<Station> singleDir;
+    private List<String> singleDir;
+    private int singleDirCnt;
 }

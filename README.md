@@ -72,9 +72,11 @@ http://localhost:8081/nosql/StationController/listDepartInfo?name=N8路<br><br>
 10.统计停靠路线最多的站点(按照id统计)并排序，显示前15个。 <br>
 http://localhost:8081/nosql/StationController/listNMostLine?num=15<br>
 
-11.统计地铁站数量(以地铁开头)、起点站(末尾标识始发站)数量、 终点站(末尾标识终点站)数量、单行站(比较上下行确定单行站)数量。 并返回站点名，注意去重。 <br>
-A: 统计地铁站、起点站、终点站数量，并返回站点名 <br>
+11A.统计地铁站、起点站、终点站数量，并返回站点名 <br>
 http://localhost:8081/nosql/StationController/listCaseStation<br>
+
+11B.统计单行站数量，并返回站点名<br>
+http://localhost:8081/nosql/StationController/listSingleDirectStation?lineId=208<br>
 
 12.分组统计常规公交(包括干线、支线、城乡线、驳接线、社区线)、 快速公交(K字开头)、高峰公交(G字开头)、夜班公交(N字开头)的数量。<br>
 http://localhost:8081/nosql/LineController/listLineTypeCount<br>
@@ -83,14 +85,7 @@ http://localhost:8081/nosql/LineController/listLineTypeCount<br>
 http://localhost:8081/nosql/StationController/listCrossStation?line1=15%E8%B7%AF%E4%B8%8A%E8%A1%8C&line2=30%E8%B7%AF%E4%B8%8B%E8%A1%8C<br>
 
 14.查询261路上行一共有多少条可以换乘的线路，注意去重。 换乘线路数即261路上行停靠的所有站台停靠其他线路的数量的总和。<br>
-<ul>
-    <li>统计可以换乘的线路数量</li>
-    http://localhost:8081/nosql/LineController/listTransLineCount?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
-    <li>统计可以换乘的线路名称</li>
-    http://localhost:8081/nosql/LineController/listTransLineName?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
-    <li>统计沿线每个站点可以换乘的线路</li>
-    http://localhost:8081/nosql/LineController/listTransLineStation?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C
-</ul>
+http://localhost:8081/nosql/LineController/listTransLineStation?lineName=261%E8%B7%AF%E4%B8%8A%E8%A1%8C<br>
 
 15.查询连接两个站台之间线路最多的两个站台并且按照降序排列，显示前15个。<br>
 http://localhost:8081/nosql/StationController/listNMostLineStation?num=15<br>
@@ -100,6 +95,12 @@ http://localhost:8081/nosql/LineController/listNMostStationLine?num=15<br>
 
 17.根据运行时间对线路进行排序(运行时间由班次数据计算而得)，显示前15条。<br>
 http://localhost:8081/nosql/LineController/listNMostTimeLine?num=15<br>
+
+19.添加一条站点数不少于10的线路。<br>
+http://localhost:8081/nosql/LineController/insertLine<br>
+
+20A.线路的删除<br>
+http://localhost:8081/nosql/LineController/deleteLine?lineId=3<br>
 
 
 

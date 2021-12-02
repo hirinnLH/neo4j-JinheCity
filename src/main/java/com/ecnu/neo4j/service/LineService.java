@@ -14,8 +14,8 @@ public interface LineService {
 //    TestCase51 findShortestRouteByStationId(String startId, String endId);
 //    TestCase52 findShortestRouteByStationName(String startId, String endId);
     List<TestCase12> findLineTypeCount();
-    TestCase141 findTransLintCount(String lineName);
-    TestCase142 findTransLineName(String lineName);
+//    TestCase141 findTransLintCount(String lineName);
+//    TestCase142 findTransLineName(String lineName);
     List<TestCase143> findTransLineStation(String lineName);
     List<TestCase16> findNMostStationLine(int num);
     List<TestCase17> findNMostTimeLine(int num);

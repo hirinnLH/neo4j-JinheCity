@@ -163,20 +163,20 @@ public class LineServiceImpl implements LineService {
         return list;
     }
 
-    @Override
-    public TestCase141 findTransLintCount(String lineName) {
-        Integer count = lineRepository.getTransLineCount(lineName);
-        TestCase141 testCase141 = new TestCase141();
-        testCase141.setCount(count);
-        return testCase141;
-    }
-
-    @Override
-    public TestCase142 findTransLineName(String lineName) {
-        TestCase142 testCase142 = new TestCase142();
-        testCase142.setName(lineRepository.getTransLineName(lineName));
-        return testCase142;
-    }
+//    @Override
+//    public TestCase141 findTransLintCount(String lineName) {
+//        Integer count = lineRepository.getTransLineCount(lineName);
+//        TestCase141 testCase141 = new TestCase141();
+//        testCase141.setCount(count);
+//        return testCase141;
+//    }
+//
+//    @Override
+//    public TestCase142 findTransLineName(String lineName) {
+//        TestCase142 testCase142 = new TestCase142();
+//        testCase142.setName(lineRepository.getTransLineName(lineName));
+//        return testCase142;
+//    }
 
     @Override
     public List<TestCase143> findTransLineStation(String lineName) {

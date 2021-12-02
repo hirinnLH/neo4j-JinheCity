@@ -71,17 +71,17 @@ public class LineController {
         return service.findLineTypeCount();
     }
 
-    //需求14-1
-    public Object listTransLineCount(HttpServletRequest request) {
-        String lineName = String.valueOf(request.getParameter("lineName"));
-        return service.findTransLintCount(lineName);
-    }
-
-    //需求14-2
-    public Object listTransLineName(HttpServletRequest request) {
-        String lineName = String.valueOf(request.getParameter("lineName"));
-        return service.findTransLineName(lineName);
-    }
+//    //需求14-1
+//    public Object listTransLineCount(HttpServletRequest request) {
+//        String lineName = String.valueOf(request.getParameter("lineName"));
+//        return service.findTransLintCount(lineName);
+//    }
+//
+//    //需求14-2
+//    public Object listTransLineName(HttpServletRequest request) {
+//        String lineName = String.valueOf(request.getParameter("lineName"));
+//        return service.findTransLineName(lineName);
+//    }
 
     //需求14-3
     public Object listTransLineStation(HttpServletRequest request) {

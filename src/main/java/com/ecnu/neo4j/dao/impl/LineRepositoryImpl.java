@@ -179,60 +179,60 @@ public class LineRepositoryImpl implements LineRepository {
         return mapList;
     }
 
-    @Override
-    public Integer getTransLineCount(String lineName) {
-        String cypher = "MATCH p=()-[*]-()\n" +
-                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = $lineName)\n" +
-                "UNWIND NODES(p) as n\n" +
-                "WITH n, (n)-[]-() as p1\n" +
-                "UNWIND p1 as pp1\n" +
-                "UNWIND relationships(pp1) as r1\n" +
-                "WITH r1\n" +
-                "WHERE TYPE(r1) <> $lineName\n" +
-                "RETURN count(DISTINCT TYPE(r1)) as num\n";
-        Session session = DB.conn();
-        Result result = session.run(cypher, parameters("lineName", lineName));
-        Record record = result.single();
-        Value value = record.get("num");
-        Integer count = value.asInt();
-
-        session.close();
-        try {
-            DB.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
-    @Override
-    public List<String> getTransLineName(String lineName) {
-        List<String> list = new ArrayList<>();
-        String cypher = "MATCH p=()-[*]-()\n" +
-                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = $lineName)\n" +
-                "UNWIND NODES(p) as n\n" +
-                "WITH n, (n)-[]-() as p1\n" +
-                "UNWIND p1 as pp1\n" +
-                "UNWIND relationships(pp1) as r1\n" +
-                "WITH r1\n" +
-                "WHERE TYPE(r1) <> $lineName\n" +
-                "RETURN DISTINCT TYPE(r1) as name\n";
-        Session session = DB.conn();
-        Result result = session.run(cypher, parameters("lineName", lineName));
-        List<Record> recordList = result.list();
-        for(Record record:recordList) {
-            Value value = record.get("name");
-            list.add(value.asString());
-        }
-
-        session.close();
-        try {
-            DB.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+//    @Override
+//    public Integer getTransLineCount(String lineName) {
+//        String cypher = "MATCH p=()-[*]-()\n" +
+//                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = $lineName)\n" +
+//                "UNWIND NODES(p) as n\n" +
+//                "WITH n, (n)-[]-() as p1\n" +
+//                "UNWIND p1 as pp1\n" +
+//                "UNWIND relationships(pp1) as r1\n" +
+//                "WITH r1\n" +
+//                "WHERE TYPE(r1) <> $lineName\n" +
+//                "RETURN count(DISTINCT TYPE(r1)) as num\n";
+//        Session session = DB.conn();
+//        Result result = session.run(cypher, parameters("lineName", lineName));
+//        Record record = result.single();
+//        Value value = record.get("num");
+//        Integer count = value.asInt();
+//
+//        session.close();
+//        try {
+//            DB.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return count;
+//    }
+//
+//    @Override
+//    public List<String> getTransLineName(String lineName) {
+//        List<String> list = new ArrayList<>();
+//        String cypher = "MATCH p=()-[*]-()\n" +
+//                "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = $lineName)\n" +
+//                "UNWIND NODES(p) as n\n" +
+//                "WITH n, (n)-[]-() as p1\n" +
+//                "UNWIND p1 as pp1\n" +
+//                "UNWIND relationships(pp1) as r1\n" +
+//                "WITH r1\n" +
+//                "WHERE TYPE(r1) <> $lineName\n" +
+//                "RETURN DISTINCT TYPE(r1) as name\n";
+//        Session session = DB.conn();
+//        Result result = session.run(cypher, parameters("lineName", lineName));
+//        List<Record> recordList = result.list();
+//        for(Record record:recordList) {
+//            Value value = record.get("name");
+//            list.add(value.asString());
+//        }
+//
+//        session.close();
+//        try {
+//            DB.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
 
     @Override
     public List<Map<String, Object>> getTransLineStation(String lineName) {

@@ -185,7 +185,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<String> findSingleDirectStation(String lineId) {
+    public TestCase112 findSingleDirectStation(String lineId) {
         Map<String, List<String>> map = stationRepository.getSingleDirectStation(lineId);
         List<String> upGoing = map.get("upGoing");
         List<String> downGoing = map.get("downGoing");
@@ -202,7 +202,10 @@ public class StationServiceImpl implements StationService {
                 singleDirection.add(str);
             }
         }
-        return singleDirection;
+        TestCase112 testCase112 = new TestCase112();
+        testCase112.setSingleDir(singleDirection);
+        testCase112.setSingleDirCnt(singleDirection.size());
+        return testCase112;
     }
 
     @Override
