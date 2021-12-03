@@ -325,7 +325,7 @@ public class LineRepositoryImpl implements LineRepository {
     public String newLine(Line line, List<TestCase19> stationList) {
         String lineId = line.getLine_id();
         String lineName = lineId + "路";
-        String route = line.getRoute();
+        String route;
         //String onewayTime = line.getOnewayTime();
         String directional = line.getDirectional();
         String kilometer = line.getKilometer();
@@ -349,6 +349,16 @@ public class LineRepositoryImpl implements LineRepository {
         if(result.hasNext()) {
             return "已存在该线路";
         }
+
+        String startCypher = "MATCH (n:Station) WHERE n.id = $startId RETURN n.name";
+        Result result1 = session.run(startCypher, parameters("startId", stationList.get(0).getId()));
+        String startStation = result1.single().get("n.name").asString();
+
+        String endCypher = "MATCH (n:Station) WHERE n.id = $endId RETURN n.name";
+        result1 = session.run(endCypher, parameters("endId", stationList.get(stationList.size()-1).getId()));
+        String endStation = result1.single().get("n.name").asString();
+
+        route = startStation + "-" + endStation;
 
         //-----Line入库-----
         String cypher = "CREATE (:Line {id:\"" + lineId + "\", directional:\"" + directional +
