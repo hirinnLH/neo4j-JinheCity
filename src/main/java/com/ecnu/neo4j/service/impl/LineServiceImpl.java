@@ -245,7 +245,7 @@ public class LineServiceImpl implements LineService {
                 line.setInterval(map1.get("interval"));
                 line.setType(map1.get("type"));
                 line.setKilometer(map1.get("kilometer"));
-                line.setRoute(map1.get("route"));
+//                line.setRoute(map1.get("route"));
 //                line.setOnewayTime(map1.get("onewayTime"));
                 line.setTimetable(map1.get("runtime"));
             }
