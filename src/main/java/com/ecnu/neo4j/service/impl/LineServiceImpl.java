@@ -243,9 +243,9 @@ public class LineServiceImpl implements LineService {
                 Map<String, String> map1 = (Map<String, String>) map.get("line");
                 line.setLine_id(map1.get("id"));
                 line.setDirectional(map1.get("directional"));
-                line.setInterval(map1.get("interval"));
+                line.setInterval(String.valueOf(map1.get("interval")));
                 line.setType(map1.get("type"));
-                line.setKilometer(map1.get("kilometer"));
+                line.setKilometer(String.valueOf(map1.get("kilometer")));
 //                line.setRoute(map1.get("route"));
 //                line.setOnewayTime(map1.get("onewayTime"));
                 line.setTimetable(map1.get("runtime"));
@@ -269,7 +269,7 @@ public class LineServiceImpl implements LineService {
             for(int i = 0; i < list.size(); i++) {
                 TestCase19 testCase19 = new TestCase19();
                 testCase19.setId(list.get(i).get("id"));
-                testCase19.setRuntime(list.get(i).get("runtime"));
+                testCase19.setRuntime(String.valueOf(list.get(i).get("runtime")));
                 //station.setId(list.get(i).getId());
                 stationList.add(testCase19);
             }

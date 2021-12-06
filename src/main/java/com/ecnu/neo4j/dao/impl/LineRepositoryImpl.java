@@ -369,7 +369,7 @@ public class LineRepositoryImpl implements LineRepository {
         session.run(cypher);
 
         //-----关系节点入库-----
-        if(directional.equals("TRUE")) {
+        if(directional.equals("true")) {
             for(int i = 0; i < stationList.size() - 1; i++) {
                 String relationNode = "CREATE (:StationStationRelation {from:\"" + stationList.get(i).getId() +
                         "\", line_id:\"" + lineId +  "\",relation:\"" + lineName  + "上行" + "\", runtime:\"" +
