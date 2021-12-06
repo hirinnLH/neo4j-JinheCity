@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.Buffer;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,16 +104,8 @@ public class LineController {
 
     //需求19-1
     public Object insertLine(HttpServletRequest request) throws IOException {
-        StringBuffer lineInfoAndStations = new StringBuffer();
-        String line;
-        BufferedReader reader;
-
-        reader = request.getReader();
-        while(null != (line = reader.readLine())) {
-            lineInfoAndStations.append(line);
-        }
-
-        return service.addLine(lineInfoAndStations.toString());
+        String jsonStr = String.valueOf(request.getAttribute("json"));
+        return service.addLine(jsonStr);
     }
 
     //需求20-1

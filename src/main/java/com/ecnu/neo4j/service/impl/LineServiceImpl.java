@@ -235,6 +235,7 @@ public class LineServiceImpl implements LineService {
             return "读取数据失败";
         }
 
+        map = (Map<String, Object>) map.get("params");
         Line line = new Line();
         List<Map<String, String>> list;
         if(map != null) {
