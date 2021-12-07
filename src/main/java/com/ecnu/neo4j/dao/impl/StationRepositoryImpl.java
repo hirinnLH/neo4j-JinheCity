@@ -167,32 +167,38 @@ public class StationRepositoryImpl implements StationRepository {
     }
 
     @Override
-    public Map<String, List<String>> getSingleDirectStation(String lineId) {
-        List<String> upGoing = new ArrayList<>();
+    public Map<String, List<StationWithoutEnglish>> getSingleDirectStation(String lineId) {
+        List<StationWithoutEnglish> upGoing = new ArrayList<>();
 
         String cypher = "MATCH p=()-[*]-()\n" +
                 "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = \""+ lineId + "路上行\")\n" +
                 "UNWIND NODES(p) as n\n" +
-                "RETURN DISTINCT n.name as name\n";
+                "RETURN DISTINCT n.name as name, n.id\n";
         Session session = DB.conn();
         Result result = session.run(cypher, parameters("lineId", lineId));
         List<Record> recordList = result.list();
         for(Record record:recordList) {
-            upGoing.add(record.get("name").asString());
+            StationWithoutEnglish swe = new StationWithoutEnglish();
+            swe.setName(record.get("name").asString());
+            swe.setId(record.get("n.id").asString());
+            upGoing.add(swe);
         }
 
-        List<String> downGoing = new ArrayList<>();
+        List<StationWithoutEnglish> downGoing = new ArrayList<>();
         cypher = "MATCH p=()-[*]-()\n" +
                 "WHERE ALL(r IN relationships(p) WHERE TYPE(r) = \"" + lineId + "路下行\")\n" +
                 "UNWIND NODES(p) as n\n" +
-                "RETURN DISTINCT n.name as name\n";
+                "RETURN DISTINCT n.name as name, n.id\n";
         result = session.run(cypher, parameters("lineId", lineId));
         recordList = result.list();
         for(Record record:recordList) {
-            downGoing.add(record.get("name").asString());
+            StationWithoutEnglish swe = new StationWithoutEnglish();
+            swe.setName(record.get("name").asString());
+            swe.setId(record.get("n.id").asString());
+            downGoing.add(swe);
         }
 
-        Map<String, List<String>> map = new HashMap<>();
+        Map<String, List<StationWithoutEnglish>> map = new HashMap<>();
         map.put("upGoing", upGoing);
         map.put("downGoing", downGoing);
         return map;

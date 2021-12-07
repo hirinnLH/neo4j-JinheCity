@@ -1,6 +1,7 @@
 package com.ecnu.neo4j.dao;
 
 import com.ecnu.neo4j.entity.Station;
+import com.ecnu.neo4j.entity.StationWithoutEnglish;
 import org.neo4j.driver.types.Path;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface StationRepository {
     //11-1. 查询地铁站、终点站、始发站
     Map<String, Object> getCaseStation();
     //11-2. 统计某条线路单行站。
-    Map<String, List<String>> getSingleDirectStation(String lineId);
+    Map<String, List<StationWithoutEnglish>> getSingleDirectStation(String lineId);
     //13 查询两路线的交叉站点
     Map<String, Object> getCrossStation(String line1, String line2);
     //15. 查询两站点之间线路最多的两个站点

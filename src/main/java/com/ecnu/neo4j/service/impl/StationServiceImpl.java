@@ -186,21 +186,37 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public TestCase112 findSingleDirectStation(String lineId) {
-        Map<String, List<String>> map = stationRepository.getSingleDirectStation(lineId);
-        List<String> upGoing = map.get("upGoing");
-        List<String> downGoing = map.get("downGoing");
+        Map<String, List<StationWithoutEnglish>> map = stationRepository.getSingleDirectStation(lineId);
+        List<StationWithoutEnglish> upGoing = map.get("upGoing");
+        List<StationWithoutEnglish> downGoing = map.get("downGoing");
 
-        List<String> singleDirection = new ArrayList<>();
-        for(String str:upGoing) {
-            if(!downGoing.contains(str)) {
-                singleDirection.add(str);
+        List<StationWithoutEnglish> singleDirection = new ArrayList<>();
+        boolean isIn = false;
+        for(StationWithoutEnglish swe:upGoing) {
+            for(StationWithoutEnglish swe2:downGoing) {
+                if(swe.getName().equals(swe2.getName())) {
+                    isIn = true;
+                    break;
+                }
             }
+            if(!isIn) {
+                singleDirection.add(swe);
+            }
+            isIn = false;
         }
 
-        for(String str:downGoing) {
-            if(!upGoing.contains(str)) {
-                singleDirection.add(str);
+        isIn = false;
+        for(StationWithoutEnglish swe:downGoing) {
+            for(StationWithoutEnglish swe2:upGoing) {
+                if(swe.getName().equals(swe2.getName())) {
+                    isIn = true;
+                    break;
+                }
             }
+            if(!isIn) {
+                singleDirection.add(swe);
+            }
+            isIn = false;
         }
         TestCase112 testCase112 = new TestCase112();
         testCase112.setSingleDir(singleDirection);
