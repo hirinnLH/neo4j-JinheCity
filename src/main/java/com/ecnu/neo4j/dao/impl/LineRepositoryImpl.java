@@ -96,7 +96,7 @@ public class LineRepositoryImpl implements LineRepository {
                     "RETURN p";
         }
         else {
-            cypher = "MATCH p=shortestPath((n:Station {name:$start})-[*]->(s:Station {name:$endS})) \n" +
+            cypher = "MATCH p=shortestPath((n:Station {name:$start})-[*]->(s:Station {name:$end})) \n" +
                     "RETURN p\n" +
                     "ORDER BY length(p)\n" +
                     "LIMIT 1";
