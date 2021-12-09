@@ -23,20 +23,31 @@ public class StationRepositoryImpl implements StationRepository {
     @Override
     public List<Map<String, Object>> getStationInfo(String name) {
         List<Map<String, Object>> mapList = new ArrayList<>();
+//        String cypher = "MATCH p=(n)-[*]->(s)\n" +
+//                "WHERE ALL(r in relationships(p) WHERE type(r)= $name) AND ANY(n in nodes(p) WHERE n.name CONTAINS \"始发站\")\n" +
+//                "UNWIND nodes(p) as node\n" +
+//                "RETURN DISTINCT properties(node) as prop\n\n";
         String cypher = "MATCH p=(n)-[*]->(s)\n" +
-                "WHERE ALL(r in relationships(p) WHERE type(r)= $name) AND ANY(n in nodes(p) WHERE n.name CONTAINS \"始发站\")\n" +
-                "UNWIND nodes(p) as node\n" +
-                "RETURN DISTINCT properties(node) as prop\n\n";
+                "WHERE ALL(r in relationships(p) WHERE type(r)=$name)\n" +
+                "return p\n" +
+                "order by length(p) desc\n" +
+                "limit 1";
 
         //连接数据库，请求数据
         Session session = DB.conn();
         Result result = session.run(cypher, parameters("name", name));
-        List<Record> recordList = result.list();
-        for(Record record:recordList) {
-            Value value = record.get("prop");
-            Map<String, Object> map = value.asMap();
+        Record record = result.single();
+        Path path = record.get("p").asPath();
+        for(Node node:path.nodes()) {
+            Map<String, Object> map = node.asMap();
             mapList.add(map);
         }
+//        List<Record> recordList = result.list();
+//        for(Record record:recordList) {
+//            Value value = record.get("prop");
+//            Map<String, Object> map = value.asMap();
+//            mapList.add(map);
+//        }
 
 
         session.close();
