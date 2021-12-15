@@ -455,13 +455,26 @@ public class LineRepositoryImpl implements LineRepository {
 
     @Override
     public String cancelLine(String lineId) {
+
+        //search if the line exists
+        String existCypher = "MATCH (n:Line {id:$lineId}) RETURN n";
+        String existRelationCypher = "MATCH p=()-[]-() \n" +
+                "WHERE ALL(r in relationships(p) WHERE r.id = $lineId) \n" +
+                "RETURN p\n";
+        Session session = DB.conn();
+        Result result = session.run(existCypher, parameters("lineId", lineId));
+        Result result1 = session.run(existRelationCypher, parameters("lineId", lineId));
+
+        if(!result.hasNext() && !result1.hasNext()) {
+            return "线路不存在";
+        }
+
         //delete line
         String cypher = "MATCH (n:Line {id:$lineId}) DELETE n";
         String relationCypher = "MATCH p=()-[r]-() \n" +
                 "WHERE r.id = $lineId\n" +
                 "DELETE r\n";
 
-        Session session = DB.conn();
         session.run(cypher, parameters("lineId", lineId));
         session.run(relationCypher, parameters("lineId", lineId));
 
@@ -470,12 +483,12 @@ public class LineRepositoryImpl implements LineRepository {
         session.run(cypher);
 
         //search if the line still exists
-        cypher = "MATCH (n:Line {id:$lineId}) RETURN n";
-        relationCypher = "MATCH p=()-[]-() \n" +
+        existCypher = "MATCH (n:Line {id:$lineId}) RETURN n";
+        existRelationCypher = "MATCH p=()-[]-() \n" +
                 "WHERE ALL(r in relationships(p) WHERE r.id = $lineId) \n" +
                 "RETURN p\n";
-        Result result = session.run(cypher, parameters("lineId", lineId));
-        Result result1 = session.run(relationCypher, parameters("lineId", lineId));
+        result = session.run(existCypher, parameters("lineId", lineId));
+        result1 = session.run(existRelationCypher, parameters("lineId", lineId));
         if(!result.hasNext() && !result1.hasNext()) {
             return "删除成功";
         }
